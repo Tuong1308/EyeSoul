@@ -1,16 +1,8 @@
 import { createContext, useContext, useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
+import { browserStorage } from '../lib/browser-storage';
 import { createCartStore, lineTotalVnd, STORAGE_KEY, type CartStore } from './cart-store';
 
 const CartContext = createContext<CartStore | null>(null);
-
-/** localStorage, or nothing when the browser blocks it (e.g. some private modes). */
-function browserStorage(): Storage | undefined {
-  try {
-    return window.localStorage;
-  } catch {
-    return undefined;
-  }
-}
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [store] = useState(() => createCartStore(browserStorage()));

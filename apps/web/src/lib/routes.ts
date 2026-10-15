@@ -10,3 +10,5 @@ export const PRODUCT_TYPES: Record<ProductType, { label: string; path: string }>
 export const productPath = (slug: string) => `/san-pham/${slug}`;
 
 export const CHECKOUT_PATH = '/thanh-toan';
+
+export const LOGIN_PATH = '/dang-nhap';

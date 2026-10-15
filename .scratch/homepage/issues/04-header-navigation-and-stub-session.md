@@ -6,11 +6,11 @@ Spec: `.scratch/homepage/spec.md`
 
 **Blocked by:** 01
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The logo links to the homepage; the Product Type links lead to the three placeholder listing routes
-- [ ] The header stays reachable on scroll and collapses to a compact menu on mobile
-- [ ] A stub session source reports signed-out (the default) or signed-in with a display name, and can be switched in development
-- [ ] Signed-out: "Đăng nhập" leads to a placeholder login route
-- [ ] Signed-in: the header shows the name with a menu containing "Đăng xuất", which switches the stub to signed-out
-- [ ] Web tests cover both session states and the navigation links
+- [x] The logo links to the homepage; the Product Type links lead to the three placeholder listing routes
+- [x] The header stays reachable on scroll and collapses to a compact menu on mobile
+- [x] A stub session source reports signed-out (the default) or signed-in with a display name, and can be switched in development
+- [x] Signed-out: "Đăng nhập" leads to a placeholder login route
+- [x] Signed-in: the header shows the name with a menu containing "Đăng xuất", which switches the stub to signed-out
+- [x] Web tests cover both session states and the navigation links

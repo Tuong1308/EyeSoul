@@ -4,13 +4,16 @@ import { Route, Routes } from 'react-router';
 import { CartProvider } from './cart/cart-context';
 import { HomePage } from './homepage/HomePage';
 import { SiteLayout } from './layout/SiteLayout';
-import { CHECKOUT_PATH, PRODUCT_TYPES, productPath } from './lib/routes';
-import { PlaceholderPage, ProductPlaceholderPage } from './placeholders/PlaceholderPage';
+import { CHECKOUT_PATH, LOGIN_PATH, PRODUCT_TYPES, productPath } from './lib/routes';
+import { LoginPlaceholderPage, PlaceholderPage, ProductPlaceholderPage } from './placeholders/PlaceholderPage';
+import { SessionProvider } from './session/session-context';
 
 export function AppProviders({ queryClient, children }: { queryClient: QueryClient; children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <CartProvider>{children}</CartProvider>
+      <SessionProvider>
+        <CartProvider>{children}</CartProvider>
+      </SessionProvider>
     </QueryClientProvider>
   );
 }
@@ -24,6 +27,7 @@ export function AppRoutes() {
           <Route key={path} path={path} element={<PlaceholderPage title={label} />} />
         ))}
         <Route path={productPath(':slug')} element={<ProductPlaceholderPage />} />
+        <Route path={LOGIN_PATH} element={<LoginPlaceholderPage />} />
         <Route path={CHECKOUT_PATH} element={<PlaceholderPage title="Thanh toán" />} />
       </Route>
     </Routes>

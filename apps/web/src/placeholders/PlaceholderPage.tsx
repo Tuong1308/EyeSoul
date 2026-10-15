@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link, useParams } from 'react-router';
+import { StubSessionPanel } from '../session/StubSessionPanel';
 
 /** Stands in for a page that a later feature will build. */
 export function PlaceholderPage({ title, children }: { title: string; children?: ReactNode }) {
@@ -22,4 +23,8 @@ export function ProductPlaceholderPage() {
       <p className="mt-4 font-mono text-sm">{slug}</p>
     </PlaceholderPage>
   );
+}
+
+export function LoginPlaceholderPage() {
+  return <PlaceholderPage title="Đăng nhập">{import.meta.env.DEV && <StubSessionPanel />}</PlaceholderPage>;
 }
