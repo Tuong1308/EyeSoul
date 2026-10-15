@@ -20,9 +20,20 @@ This ticket introduces the shared scroll-reveal building block and stubs `Inters
 
 **Status:** ready-for-agent
 
-- [ ] Three labelled Spotlight regions appear in order Products, Sharing, AI assistant, with the copy above
-- [ ] The CTAs link to `/products`, `/portfolio`, `/assistant`, and those pages render
-- [ ] The scroll reveal plays once, with the timings above; with reduced motion, content shows without movement and quotes don't rotate
-- [ ] The AI band's espresso background is visibly distinct from the dark band below it
-- [ ] A shared scroll-reveal building block exists for later tickets; the test setup stubs `IntersectionObserver`
-- [ ] Homepage tests cover the three Spotlights and their CTAs
+- [x] Three labelled Spotlight regions appear in order Products, Sharing, AI assistant, with the copy above
+- [x] The CTAs link to `/products`, `/portfolio`, `/assistant`, and those pages render
+- [x] The scroll reveal plays once, with the timings above; with reduced motion, content shows without movement and quotes don't rotate
+- [x] The AI band's espresso background is visibly distinct from the dark band below it
+- [x] A shared scroll-reveal building block exists for later tickets; the test setup stubs `IntersectionObserver`
+- [x] Homepage tests cover the three Spotlights and their CTAs
+
+## Comments
+
+**2026-10-15, review:** All criteria verified on `feat/ui-polish` (6dc556b); web suite 76/76 green, typecheck clean.
+- `homepage/Spotlights.tsx`: three regions, "The shop", "Your portfolio" and "AI assistant", come between the hero and the Sample Photos. The copy comes first in the DOM and the sides alternate from md up. They render without API data (HomePage tests).
+- CTAs: "Browse products" goes to `/products` ("Our products"), "Start your portfolio" to `/portfolio` and "Ask the assistant" to `/assistant`, and each destination's h1 renders (HomePage tests). There are no "Coming soon" labels.
+- Reveal: `components/Reveal.tsx` (once, 30% in view) with `rise()` variants. Measured in headless Edge with `getAnimations()`: copy lines start at 150/450/750/1050/1350ms (48px over 1.2s), the visual at 600ms (85% scale and 60px down, over 1.6s), and the camera and roll at 1000/1400ms. With reduced motion, content shows from the start without movement, and the quotes stay on Ansel Adams.
+- Bands are paper, `bg-beige` and `bg-espresso`; screenshot checked at 1440px. The contrast with the ink Sample Photo band below can only be judged once 09 lands.
+- The test setup stubs `IntersectionObserver` to report everything in view. `Reveal` and `rise` are ready for 09 and 10; a child that sets its own `delay` counts from the start of the reveal.
+- The portfolio and chat mocks are `aria-hidden`; the camera and roll photos have `alt=""`.
+- Known, left for later: the Motion-system note that reveals become "a quick fade" under reduced motion; today they are simply shown (story 66's "still"). It belongs with 10.
