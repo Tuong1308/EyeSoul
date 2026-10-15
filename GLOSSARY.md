@@ -1,6 +1,6 @@
 # Eye Soul
 
-Eye Soul is a web shop selling digital cameras, film cameras and film rolls to customers in Vietnam (Vietnamese UI, prices in VND).
+Eye Soul is a web shop selling digital cameras, film cameras and film rolls to customers in Vietnam (English UI, prices in VND; see ADR 0004).
 
 ## Catalog
 
@@ -40,6 +40,10 @@ _Avoid_: Out of Stock (for Film Cameras)
 The state of a Digital Camera or Film Roll with no units left; it is still offered, just not purchasable until restocked.
 _Avoid_: Sold, sold out
 
+**Featured Product**:
+A product the shop deliberately promotes within the listing for its Product Type.
+_Avoid_: Hot product, highlight
+
 ## Shopping
 
 **Cart**:
@@ -48,6 +52,6 @@ _Avoid_: Basket, bag
 
 ## Homepage
 
-**Featured Product**:
-A product the shop deliberately promotes on the homepage, within the row for its Product Type.
-_Avoid_: Hot product, highlight
+**Spotlight**:
+A homepage section that advertises one capability of Eye Soul (its products, photo sharing, the AI assistant), not any particular product.
+_Avoid_: Feature (ambiguous with Featured Product), banner, promo
