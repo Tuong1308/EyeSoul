@@ -156,4 +156,11 @@ describe('Guest Cart', () => {
     expect(within(c200).queryByRole('button', { name: 'Thêm vào giỏ' })).not.toBeInTheDocument();
     expect(within(await findCard('Kodak Portra 400')).getByRole('button', { name: 'Thêm vào giỏ' })).toBeInTheDocument();
   });
+
+  it('tells screen reader users which product each add button is for', async () => {
+    renderApp('/');
+
+    const portra = await findCard('Kodak Portra 400');
+    expect(within(portra).getByRole('button', { name: 'Thêm vào giỏ' })).toHaveAccessibleDescription('Kodak Portra 400');
+  });
 });

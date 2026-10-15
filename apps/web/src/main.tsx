@@ -5,7 +5,8 @@ import { BrowserRouter } from 'react-router';
 import { AppProviders, AppRoutes } from './App';
 import './index.css';
 
-const queryClient = new QueryClient();
+// One quiet retry rides out a blip; past that the shopper sees the error and its "Thử lại" sooner.
+const queryClient = new QueryClient({ defaultOptions: { queries: { retry: 1 } } });
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

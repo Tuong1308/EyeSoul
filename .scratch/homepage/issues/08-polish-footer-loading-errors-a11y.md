@@ -6,12 +6,12 @@ Spec: `.scratch/homepage/spec.md`
 
 **Blocked by:** 03, 05, 06, 07
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Footer with contact info, shipping and return policy links (placeholder routes) and social links
-- [ ] Skeleton placeholders reserve layout while homepage data loads (no layout jump)
-- [ ] On a failed load, a friendly Vietnamese error with a "Thử lại" action renders, and retrying refetches
-- [ ] Below-the-fold photos load lazily
-- [ ] All photos have meaningful alt text; all controls (Cart, account, search, drawer, menu) have accessible names
-- [ ] Section headings, rules and spacing are consistent with Variant B across the page
-- [ ] Web tests cover the loading state, the error state and retry
+- [x] Footer with contact info, shipping and return policy links (placeholder routes) and social links
+- [x] Skeleton placeholders reserve layout while homepage data loads (no layout jump)
+- [x] On a failed load, a friendly Vietnamese error with a "Thử lại" action renders, and retrying refetches
+- [x] Below-the-fold photos load lazily
+- [x] All photos have meaningful alt text; all controls (Cart, account, search, drawer, menu) have accessible names
+- [x] Section headings, rules and spacing are consistent with Variant B across the page
+- [x] Web tests cover the loading state, the error state and retry

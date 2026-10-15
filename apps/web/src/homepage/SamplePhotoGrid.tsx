@@ -3,8 +3,11 @@ import { Link } from 'react-router';
 import { SectionTitle } from '../components/SectionTitle';
 import { productPath } from '../lib/routes';
 
-// Repeating tile sizes for the magazine grid; `grid-flow-dense` back-fills the gaps the large tiles leave.
-const TILE_SIZES = [
+// Repeating tile sizes for the magazine grid (the loading skeleton draws the same pattern); `grid-flow-dense` back-fills the gaps the large tiles leave.
+/** The API sends at most this many Sample Photos. */
+export const SAMPLE_PHOTO_LIMIT = 12;
+
+export const TILE_SIZES = [
   'col-span-2 row-span-2',
   '',
   'row-span-2',

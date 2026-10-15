@@ -27,7 +27,7 @@ export function ProductCardView({ product }: { product: ProductCard }) {
         <p className="mt-1 text-[11px] font-semibold uppercase tracking-[.2em] text-ink/60">Hết hàng</p>
       ) : (
         <div className="mt-auto">
-          <AddToCartButton product={product} />
+          <AddToCartButton product={product} describedBy={nameId} />
         </div>
       )}
     </article>

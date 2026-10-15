@@ -1,6 +1,8 @@
 import { fireEvent, screen, within } from '@testing-library/react';
-import { serveHomepage } from './test/homepage-fixture';
+import { http, HttpResponse } from 'msw';
+import { homepage, serveHomepage } from './test/homepage-fixture';
 import { renderApp } from './test/render-app';
+import { server } from './test/server';
 
 describe('Homepage', () => {
   beforeEach(serveHomepage);
@@ -114,5 +116,48 @@ describe('Homepage', () => {
 
     expect(await screen.findByRole('heading', { name: 'Sản phẩm' })).toBeInTheDocument();
     expect(screen.getByText('ilford-hp5-plus-35mm-36')).toBeInTheDocument();
+  });
+});
+
+describe('Homepage loading and errors', () => {
+  it('holds the layout with placeholders while the homepage data loads', async () => {
+    let respond!: () => void;
+    const answered = new Promise<void>((resolve) => (respond = resolve));
+    server.use(
+      http.get('http://api.test/homepage', async () => {
+        await answered;
+        return HttpResponse.json(homepage);
+      }),
+    );
+    renderApp('/');
+
+    const loading = screen.getByRole('status', { name: 'Đang tải sản phẩm' });
+    expect(loading).toHaveTextContent('Đang tải sản phẩm…');
+    expect(screen.queryByRole('region', { name: 'Máy ảnh digital' })).not.toBeInTheDocument();
+
+    respond();
+
+    expect(await screen.findByRole('region', { name: 'Máy ảnh digital' })).toBeInTheDocument();
+    expect(screen.queryByRole('status', { name: 'Đang tải sản phẩm' })).not.toBeInTheDocument();
+  });
+
+  it('shows a friendly error when the homepage data fails to load, and "Thử lại" loads it again', async () => {
+    let failing = true;
+    server.use(
+      http.get('http://api.test/homepage', () =>
+        failing ? new HttpResponse(null, { status: 500 }) : HttpResponse.json(homepage),
+      ),
+    );
+    renderApp('/');
+
+    const error = await screen.findByRole('alert');
+    expect(error).toHaveTextContent('Không tải được sản phẩm');
+    expect(screen.queryByRole('region', { name: 'Máy ảnh digital' })).not.toBeInTheDocument();
+
+    failing = false;
+    fireEvent.click(within(error).getByRole('button', { name: 'Thử lại' }));
+
+    expect(await screen.findByRole('region', { name: 'Máy ảnh digital' })).toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 });

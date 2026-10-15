@@ -5,7 +5,8 @@ import { canAdd } from './cart-store';
 
 const CONFIRMATION_MS = 2000;
 
-export function AddToCartButton({ product }: { product: ProductCard }) {
+/** `describedBy` names the element holding the product's name, so the button says which product it adds. */
+export function AddToCartButton({ product, describedBy }: { product: ProductCard; describedBy: string }) {
   const { lines, add } = useCart();
   // Bumped on every add, so adding again restarts the confirmation's timer.
   const [addedCount, setAddedCount] = useState(0);
@@ -26,6 +27,7 @@ export function AddToCartButton({ product }: { product: ProductCard }) {
       <button
         type="button"
         disabled={alreadyInCart}
+        aria-describedby={describedBy}
         onClick={() => {
           add(product);
           setAddedCount((count) => count + 1);

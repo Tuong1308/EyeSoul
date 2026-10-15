@@ -16,3 +16,7 @@ export const LOGIN_PATH = '/dang-nhap';
 export const SEARCH_PATH = '/tim-kiem';
 
 export const searchPath = (query: string) => `${SEARCH_PATH}?q=${encodeURIComponent(query)}`;
+
+export const SHIPPING_POLICY_PATH = '/chinh-sach-van-chuyen';
+
+export const RETURN_POLICY_PATH = '/chinh-sach-doi-tra';

@@ -4,7 +4,15 @@ import { Route, Routes } from 'react-router';
 import { CartProvider } from './cart/cart-context';
 import { HomePage } from './homepage/HomePage';
 import { SiteLayout } from './layout/SiteLayout';
-import { CHECKOUT_PATH, LOGIN_PATH, PRODUCT_TYPES, productPath, SEARCH_PATH } from './lib/routes';
+import {
+  CHECKOUT_PATH,
+  LOGIN_PATH,
+  PRODUCT_TYPES,
+  productPath,
+  RETURN_POLICY_PATH,
+  SEARCH_PATH,
+  SHIPPING_POLICY_PATH,
+} from './lib/routes';
 import {
   LoginPlaceholderPage,
   PlaceholderPage,
@@ -35,6 +43,8 @@ export function AppRoutes() {
         <Route path={SEARCH_PATH} element={<SearchResultsPlaceholderPage />} />
         <Route path={LOGIN_PATH} element={<LoginPlaceholderPage />} />
         <Route path={CHECKOUT_PATH} element={<PlaceholderPage title="Thanh toán" />} />
+        <Route path={SHIPPING_POLICY_PATH} element={<PlaceholderPage title="Chính sách vận chuyển" />} />
+        <Route path={RETURN_POLICY_PATH} element={<PlaceholderPage title="Chính sách đổi trả" />} />
       </Route>
     </Routes>
   );
