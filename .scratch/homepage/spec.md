@@ -112,7 +112,7 @@ Delivering this also sets up the whole stack end to end: monorepo, Docker Postgr
 
 ### Foundation (developer)
 
-57. As a developer, I want one pnpm monorepo containing the web app, the API and a shared types package, so that the web app and API agree on data shapes.
+57. As a developer, I want one npm workspaces monorepo containing the web app, the API and a shared types package, so that the web app and API agree on data shapes.
 58. As a developer, I want a local Postgres started with one Docker Compose command, so that I can develop without depending on Supabase or the network.
 59. As a developer, I want one command to migrate and seed the database with realistic Vietnamese catalog data, so that the homepage has something real-looking to show.
 60. As a developer, I want the API packaged with a Dockerfile, so that it can be deployed to a container host later.
@@ -121,7 +121,7 @@ Delivering this also sets up the whole stack end to end: monorepo, Docker Postgr
 ## Implementation Decisions
 
 ### Repository and stack
-- pnpm workspaces monorepo with three packages: the web app (React + Vite + TypeScript, React Router, TanStack Query, Tailwind, shadcn/ui, Motion), the API (NestJS + TypeScript + Prisma), and a shared package holding the DTO types both sides use.
+- npm workspaces monorepo with three packages: the web app (React + Vite + TypeScript, React Router, TanStack Query, Tailwind, shadcn/ui, Motion), the API (NestJS + TypeScript + Prisma), and a shared package holding the DTO types both sides use.
 - Docker Compose provides Postgres for development and for the API's tests. Production will use Supabase Postgres; Supabase Storage holds images later. Seed images are static placeholder URLs, so no upload pipeline is built now.
 - The API has a Dockerfile. The web app builds to static files. The API enables CORS for the configured web origin.
 

@@ -25,7 +25,7 @@
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
-    "@eyesoul/shared": "workspace:^",
+    "@eyesoul/shared": "*",
     "@nestjs/cli": "^11",
     "@nestjs/testing": "^11",
     "@types/express": "^5",

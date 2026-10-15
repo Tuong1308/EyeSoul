@@ -1,14 +1,25 @@
 {
   "name": "eyesoul",
   "private": true,
-  "packageManager": "pnpm@9.15.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "db:up": "docker compose up -d --wait postgres",
     "db:down": "docker compose down",
-    "db:setup": "pnpm --filter @eyesoul/api db:setup",
-    "dev:api": "pnpm --filter @eyesoul/api dev",
-    "dev:web": "pnpm --filter @eyesoul/web dev",
-    "typecheck": "pnpm -r typecheck",
-    "test": "pnpm -r test"
+    "db:setup": "npm run db:setup -w @eyesoul/api",
+    "dev:api": "npm run dev -w @eyesoul/api",
+    "dev:web": "npm run dev -w @eyesoul/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "allowScripts": {
+    "prisma@6.19.3": true,
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "esbuild@0.28.2": true,
+    "esbuild@0.25.12": true,
+    "msw": false
   }
 }

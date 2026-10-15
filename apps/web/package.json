@@ -17,7 +17,7 @@
     "react-router": "^7"
   },
   "devDependencies": {
-    "@eyesoul/shared": "workspace:^",
+    "@eyesoul/shared": "*",
     "@tailwindcss/vite": "^4",
     "@testing-library/dom": "^10",
     "@testing-library/jest-dom": "^6",
