@@ -19,7 +19,7 @@ export function AccountControl() {
             link.focus();
           }
         }}
-        className="flex h-11 items-center rounded-full px-3 text-sm font-medium hover:bg-line/60"
+        className="press flex h-11 items-center rounded-full px-3 text-sm font-medium hover:bg-line/60"
       >
         Log in
       </Link>

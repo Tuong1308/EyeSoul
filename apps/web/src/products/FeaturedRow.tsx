@@ -7,7 +7,7 @@ import { PRODUCT_TYPES } from '../lib/routes';
 import { ProductCardView } from './ProductCardView';
 
 /** Each row's title, then its cards one by one, fade and rise in once as the row scrolls into view. */
-const ENTER = rise(24, 0.6);
+const ROW_ITEM_RISE = rise(24, 0.6);
 
 const ROW_TITLES: Record<ProductType, { kicker: string; lead: string; emphasis: string }> = {
   DIGITAL_CAMERA: { kicker: 'Featured · Brand new', lead: 'Digital', emphasis: 'cameras' },
@@ -20,7 +20,7 @@ export function FeaturedRow({ row }: { row: HomepageRow }) {
   return (
     <section aria-labelledby={headingId} className="frame mt-16">
       <Reveal stagger={0.08} amount={0.2}>
-        <motion.div variants={ENTER}>
+        <motion.div variants={ROW_ITEM_RISE}>
           <SectionTitle
             id={headingId}
             {...ROW_TITLES[row.productType]}
@@ -37,7 +37,7 @@ export function FeaturedRow({ row }: { row: HomepageRow }) {
         {/* A swipeable strip on mobile, a 4-column grid from md up. */}
         <ul className="-mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 md:mx-0 md:grid md:grid-cols-4 md:gap-5 md:overflow-visible md:px-0 md:pb-0">
           {row.products.map((product) => (
-            <motion.li key={product.id} variants={ENTER} className="w-[70%] shrink-0 snap-start sm:w-[45%] md:w-auto">
+            <motion.li key={product.id} variants={ROW_ITEM_RISE} className="w-[70%] shrink-0 snap-start sm:w-[45%] md:w-auto">
               <ProductCardView product={product} />
             </motion.li>
           ))}

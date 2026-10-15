@@ -50,9 +50,10 @@ export function ProductsMenu({ onNavigate }: { onNavigate: () => void }) {
         aria-expanded={dropsDown ? open : undefined}
         aria-controls={dropsDown ? panelId : undefined}
         onClick={follow}
-        className={`flex items-center gap-1 py-3 text-sm font-medium underline-offset-8 lg:py-1 ${onProducts ? 'underline decoration-amber decoration-2' : 'link-slide'}`}
+        className={`flex items-center gap-1 py-3 text-sm font-medium lg:py-1 ${onProducts ? 'underline decoration-amber decoration-2 underline-offset-8' : ''}`}
       >
-        Products
+        {/* The slide-in underline sits under the word, not the padded link or its chevron. */}
+        <span className={onProducts ? '' : 'link-slide'}>Products</span>
         <span aria-hidden className={`hidden text-xs transition lg:inline ${open ? 'rotate-180' : ''}`}>
           ▾
         </span>

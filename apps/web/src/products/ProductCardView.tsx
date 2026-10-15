@@ -20,7 +20,7 @@ export function ProductCardView({ product }: { product: ProductCard }) {
             src={product.photo.url}
             alt={product.photo.alt}
             loading="lazy"
-            className="h-full w-full object-cover transition duration-700 ease-out motion-safe:group-hover:scale-105"
+            className="h-full w-full object-cover transition duration-700 ease-out motion-safe:can-hover:group-hover:scale-105"
           />
         )}
         {product.conditionGrade && <ConditionGradeBadge grade={product.conditionGrade} className="absolute left-3 top-3" />}

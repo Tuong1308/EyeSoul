@@ -9,7 +9,7 @@ export function PlaceholderPage({ title, children }: { title: string; children?:
       <h1 className="font-serif text-4xl md:text-6xl">{title}</h1>
       {children}
       <p className="mt-6 text-sm text-ink/70">This page is under construction.</p>
-      <Link to="/" className="mt-4 inline-block text-sm font-medium underline underline-offset-4">
+      <Link to="/" className="link-slide mt-4 inline-block text-sm font-medium">
         Back to home
       </Link>
     </main>

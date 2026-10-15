@@ -57,6 +57,7 @@ export function AddToCartButton({ product, describedBy, className = '' }: AddToC
           add(product);
           setAddedCount((count) => count + 1);
         }}
+        // Its own press scale: the hover grow is a utility, which outranks the base rule that presses every button.
         className="flex h-11 w-11 items-center justify-center rounded-full bg-ink text-paper shadow-soft transition enabled:hover:bg-ink/85 motion-safe:enabled:hover:scale-110 motion-safe:enabled:active:scale-[.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber disabled:bg-paper disabled:text-ink"
       >
         {alreadyInCart ? <CheckIcon /> : <PlusIcon />}

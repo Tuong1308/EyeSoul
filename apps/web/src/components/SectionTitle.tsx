@@ -33,8 +33,8 @@ export function SectionTitle({ id, kicker, lead, emphasis, action, onDark = fals
 export function SectionTitleSkeleton() {
   return (
     <div className="border-t border-ink pt-6">
-      <div className="h-3 w-40 animate-pulse rounded bg-line" />
-      <div className="mt-3 h-9 w-72 max-w-full animate-pulse rounded bg-line md:h-14 md:w-[28rem]" />
+      <div className="h-3 w-40 motion-safe:animate-pulse rounded bg-line" />
+      <div className="mt-3 h-9 w-72 max-w-full motion-safe:animate-pulse rounded bg-line md:h-14 md:w-[28rem]" />
     </div>
   );
 }

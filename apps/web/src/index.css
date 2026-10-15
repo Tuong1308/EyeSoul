@@ -98,8 +98,10 @@
 }
 
 /*
- * Motion language (spec "Motion system"). Presses and slides only run for shoppers who haven't asked for reduced
- * motion; for those who have, transitions are limited to colour and opacity, so nothing moves beyond a quick fade.
+ * Motion language (spec "Motion system"). Reduced motion is handled in three places, each for its own kind of motion:
+ * - CSS transitions: the rule below limits them to colour, opacity and visibility, so state changes fade or snap.
+ * - CSS transforms on hover, press and loops: `motion-safe:` (or a no-preference media query) so they never start.
+ * - Motion (JS) animations: `useReducedMotion`, e.g. Reveal's quick fade, the hero entrance, the Cart feedback.
  */
 @layer base {
   @media (prefers-reduced-motion: no-preference) {
@@ -113,7 +115,9 @@
     *,
     ::before,
     ::after {
-      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow !important;
+      transition-property:
+        color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, visibility,
+        box-shadow, filter, backdrop-filter !important;
     }
   }
 }
@@ -127,7 +131,10 @@
   }
 }
 
-/* A text link whose underline slides in from the left on hover or keyboard focus. */
+/*
+ * A text link whose underline slides in from the left on hover or keyboard focus. It can also sit on the text inside
+ * a padded link (e.g. the header's "Products"), sliding in when that link is hovered or focused.
+ */
 @utility link-slide {
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
@@ -136,7 +143,8 @@
   transition: background-size 300ms ease-out;
 
   &:hover,
-  &:focus-visible {
+  &:focus-visible,
+  :where(a:hover, a:focus-visible) > & {
     background-size: 100% 1px;
   }
 }

@@ -131,8 +131,8 @@ function PolaroidRowSkeleton() {
             className="w-60 shrink-0 bg-paper/10 p-2.5 pb-3 md:w-72 md:p-3"
             style={{ rotate: `${TILTS[index % TILTS.length]}deg` }}
           >
-            <div className="aspect-square animate-pulse bg-paper/15" />
-            <div className="mx-auto mt-3 h-5 w-2/3 animate-pulse rounded bg-paper/15" />
+            <div className="aspect-square motion-safe:animate-pulse bg-paper/15" />
+            <div className="mx-auto mt-3 h-5 w-2/3 motion-safe:animate-pulse rounded bg-paper/15" />
           </div>
         ))}
       </div>

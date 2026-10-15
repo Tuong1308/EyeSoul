@@ -1,8 +1,8 @@
-import { animate, useReducedMotion } from 'motion/react';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import { useCart } from '../cart/cart-context';
 import { MiniCart } from '../cart/MiniCart';
+import { useCartAddFeedback } from '../cart/use-cart-add-feedback';
 import { LogoHorizontal } from '../components/Logo';
 import { SearchBox } from '../search/SearchBox';
 import { AccountControl } from './AccountControl';
@@ -101,28 +101,6 @@ export function Header() {
       {cartOpen && <MiniCart onClose={closeCart} />}
     </>
   );
-}
-
-/**
- * After each add to the Cart (the count going up, not down), the Cart icon bounces and its count pulses.
- * Nothing moves for shoppers who prefer reduced motion.
- */
-function useCartAddFeedback(count: number) {
-  const iconRef = useRef<HTMLSpanElement>(null);
-  const countRef = useRef<HTMLSpanElement>(null);
-  const reduceMotion = useReducedMotion();
-  const previousCount = useRef(count);
-  useEffect(() => {
-    const added = count > previousCount.current;
-    previousCount.current = count;
-    if (!added || reduceMotion) return;
-    const animations = [
-      iconRef.current && animate(iconRef.current, { y: [0, -6, 0, -2, 0] }, { duration: 0.5, ease: 'easeOut' }),
-      countRef.current && animate(countRef.current, { scale: [1, 1.35, 1] }, { duration: 0.4, ease: 'easeOut' }),
-    ];
-    return () => animations.forEach((animation) => animation?.stop());
-  }, [count, reduceMotion]);
-  return { iconRef, countRef };
 }
 
 /**
