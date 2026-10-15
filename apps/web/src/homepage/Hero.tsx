@@ -12,7 +12,7 @@ const PILL_INTERVAL_MS = 3000;
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 /** Fade and rise after `delay` seconds; with reduced motion, a quick fade in place. */
-function useEnter() {
+function useEntrance() {
   const reduceMotion = useReducedMotion();
   return (delay: number, rise = 24) => ({
     initial: { opacity: 0, y: reduceMotion ? 0 : rise },
@@ -28,7 +28,7 @@ function useEnter() {
  * `data-hero` lets the header tighten once the hero has scrolled past.
  */
 export function Hero() {
-  const enter = useEnter();
+  const enter = useEntrance();
   const reduceMotion = useReducedMotion();
   return (
     <section aria-label="About Eye Soul" data-hero className="overflow-hidden bg-paper pt-12 md:pt-20">
@@ -59,7 +59,7 @@ export function Hero() {
           >
             Shop film cameras
           </Link>
-          {/* A plain in-page link: the browser scrolls to the Sample Photo heading (smoothly, see index.css). */}
+          {/* A plain in-page link: the browser scrolls to the Sample Photo section (smoothly, see index.css). */}
           <a
             href="#sample-photos"
             className="rounded-full border border-ink px-6 py-3 text-sm font-semibold transition hover:bg-ink hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
@@ -72,11 +72,11 @@ export function Hero() {
         <FilmStrip />
       </motion.div>
       <div className="overflow-hidden bg-amber py-3 text-sm font-semibold text-ink">
-        <ul aria-label="Our commitments" className="marquee marquee-reverse flex w-max gap-12 whitespace-nowrap [--marquee-duration:30s]">
+        <ul aria-label="Our commitments" className="marquee marquee-reverse flex w-max whitespace-nowrap [--marquee-duration:30s]">
           {Array.from({ length: TICKER_COPIES }, (_, copy) =>
             COMMITMENTS.map((commitment) => (
               // Only the first copy is read out; the rest just keep the ticker looping.
-              <li key={`${copy}-${commitment}`} aria-hidden={copy > 0 || undefined}>
+              <li key={`${copy}-${commitment}`} aria-hidden={copy > 0 || undefined} className="pr-12">
                 <span aria-hidden>✦ </span>
                 {commitment}
               </li>
@@ -90,7 +90,7 @@ export function Hero() {
 
 /** Words that rise in one by one, ~0.08s apart, from `start` seconds. */
 function Words({ text, start }: { text: string; start: number }) {
-  const enter = useEnter();
+  const enter = useEntrance();
   return text.split(' ').map((word, index) => (
     <span key={index}>
       {index > 0 && ' '}
@@ -143,10 +143,10 @@ function FilmStrip() {
     <div aria-hidden className="mt-14 overflow-hidden bg-ink py-3 text-paper">
       <div className="h-3 opacity-90" style={{ backgroundImage: SPROCKETS }} />
       {/* Two copies back to back, so sliding by half the width loops seamlessly. */}
-      <ul className="marquee marquee-pausable flex w-max gap-3 py-3 [--marquee-duration:45s]">
+      <ul className="marquee flex w-max py-3 [--marquee-duration:45s]">
         {[...HERO_STRIP_PHOTOS, ...HERO_STRIP_PHOTOS].map((src, index) => (
-          <li key={index} className="relative h-36 shrink-0 overflow-hidden rounded-sm md:h-52">
-            <img src={src} alt="" className="h-full w-auto object-cover" />
+          <li key={index} className="relative h-36 shrink-0 pr-3 md:h-52">
+            <img src={src} alt="" className="h-full w-auto rounded-sm object-cover" />
             <span className="absolute left-2 top-1 font-mono text-[10px] tracking-widest text-amber">
               ▸ {String((index % HERO_STRIP_PHOTOS.length) + 1).padStart(2, '0')}A
             </span>

@@ -61,33 +61,34 @@
   }
 }
 
-/* "See sample photos" glides down to the Sample Photo heading, which keeps clear of the sticky header. */
+/* "See sample photos" glides down to the Sample Photo section. */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
   }
 }
-#sample-photos {
-  scroll-margin-top: 6rem;
-}
 
-/* Endless strips (the hero's film strip and commitments ticker): each holds its content twice and slides by half. */
+/*
+ * Endless strips (the hero's film strip and commitments ticker): each holds its content twice and slides by half,
+ * so items must be spaced with padding, not `gap` (a gap would leave half a gap's jump at the loop).
+ * They pause under the pointer and stand still for reduced motion.
+ */
 @keyframes marquee {
   to {
     transform: translateX(-50%);
   }
 }
-.marquee {
+@utility marquee {
   animation: marquee var(--marquee-duration, 40s) linear infinite;
-}
-.marquee-reverse {
-  animation-direction: reverse;
-}
-.marquee-pausable:hover {
-  animation-play-state: paused;
-}
-@media (prefers-reduced-motion: reduce) {
-  .marquee {
+
+  &:hover {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
+}
+@utility marquee-reverse {
+  animation-direction: reverse;
 }

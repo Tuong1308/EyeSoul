@@ -11,11 +11,16 @@ export function HomePage() {
   return (
     <main className="pb-24">
       <Hero />
-      <div className="frame">
-        {isPending && <HomePageSkeleton />}
-        {failed && <LoadError subject="photos" retrying={isFetching} onRetry={() => void refetch()} />}
+      {/* The hero's "See sample photos" target: always on the page, so the button works while the photos load too. */}
+      <div id="sample-photos" className="scroll-mt-24">
+        {(isPending || failed) && (
+          <div className="frame">
+            {isPending && <HomePageSkeleton />}
+            {failed && <LoadError subject="photos" retrying={isFetching} onRetry={() => void refetch()} />}
+          </div>
+        )}
+        {data && <SamplePhotoGrid photos={data.samplePhotos} />}
       </div>
-      {data && <SamplePhotoGrid photos={data.samplePhotos} />}
     </main>
   );
 }

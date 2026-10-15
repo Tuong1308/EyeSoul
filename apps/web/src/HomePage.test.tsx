@@ -11,7 +11,6 @@ describe('Homepage', () => {
     renderApp('/');
 
     const hero = screen.getByRole('region', { name: 'About Eye Soul' });
-    expect(within(hero).getByRole('heading', { level: 1, name: 'Slow down, look closer.' })).toBeInTheDocument();
     const shop = within(hero).getByRole('link', { name: 'Shop film cameras' });
     expect(shop).toHaveAttribute('href', '/products?type=film-camera');
     fireEvent.click(shop);
@@ -20,15 +19,23 @@ describe('Homepage', () => {
     expect(await screen.findAllByRole('region')).toEqual([screen.getByRole('region', { name: 'Film cameras' })]);
   });
 
-  it('points the hero\'s "See sample photos" button at the Sample Photo section', async () => {
+  it('headlines the hero "Slow down, look closer."', () => {
+    renderApp('/');
+
+    const hero = screen.getByRole('region', { name: 'About Eye Soul' });
+    expect(within(hero).getByRole('heading', { level: 1, name: 'Slow down, look closer.' })).toBeInTheDocument();
+  });
+
+  it('points the hero\'s "See sample photos" button at the Sample Photo section, even before the photos arrive', async () => {
     renderApp('/');
 
     const hero = screen.getByRole('region', { name: 'About Eye Soul' });
     const see = within(hero).getByRole('link', { name: 'See sample photos' });
     expect(see).toHaveAttribute('href', '#sample-photos');
+    const target = document.getElementById('sample-photos')!;
+    expect(within(target).getByRole('status', { name: 'Loading photos' })).toBeInTheDocument();
 
-    const samples = await screen.findByRole('region', { name: 'Shot on our film' });
-    expect(within(samples).getByRole('heading', { name: 'Shot on our film' })).toHaveAttribute('id', 'sample-photos');
+    expect(await within(target).findByRole('region', { name: 'Shot on our film' })).toBeInTheDocument();
   });
 
   it('keeps the hero film strip and photos out of the way of assistive tech: the two buttons are all it offers', () => {
