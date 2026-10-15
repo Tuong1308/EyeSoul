@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { LogoMark } from '../components/Logo';
+import { REVEAL_EASE } from '../components/Reveal';
 import { PRODUCT_TYPES } from '../lib/routes';
 import { HERO_PILL_PHOTOS, HERO_STRIP_PHOTOS } from './hero-photos';
 
@@ -9,7 +10,6 @@ const COMMITMENTS = ['Film cameras graded A+ to C', 'Nationwide delivery', 'Insp
 /** Copies of the commitments in the ticker, enough to run past the widest screen before it loops. */
 const TICKER_COPIES = 6;
 const PILL_INTERVAL_MS = 3000;
-const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 /** Fade and rise after `delay` seconds; with reduced motion, a quick fade in place. */
 function useEntrance() {
@@ -17,7 +17,7 @@ function useEntrance() {
   return (delay: number, rise = 24) => ({
     initial: { opacity: 0, y: reduceMotion ? 0 : rise },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: reduceMotion ? 0.2 : 0.6, delay: reduceMotion ? 0 : delay, ease: EASE_OUT },
+    transition: { duration: reduceMotion ? 0.2 : 0.6, delay: reduceMotion ? 0 : delay, ease: REVEAL_EASE },
   });
 }
 
@@ -116,7 +116,7 @@ function PhotoPill({ delay }: { delay: number }) {
       className="relative mx-2 inline-block h-[.78em] w-[1.7em] overflow-hidden rounded-full bg-line align-[-.06em]"
       initial={{ scaleX: reduceMotion ? 1 : 0, opacity: 0 }}
       animate={{ scaleX: 1, opacity: 1 }}
-      transition={{ duration: reduceMotion ? 0.2 : 0.7, delay: reduceMotion ? 0 : delay, ease: EASE_OUT }}
+      transition={{ duration: reduceMotion ? 0.2 : 0.7, delay: reduceMotion ? 0 : delay, ease: REVEAL_EASE }}
     >
       <AnimatePresence initial={false}>
         <motion.img

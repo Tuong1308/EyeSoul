@@ -3,7 +3,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { Link } from 'react-router';
 import { Reveal, REVEAL_EASE, rise } from '../components/Reveal';
 import { ASSISTANT_PATH, PORTFOLIO_PATH, PRODUCTS_PATH } from '../lib/routes';
-import { PRODUCT_TYPE_PHOTOS } from '../lib/showcase-photos';
+import { PRODUCT_TYPE_PHOTOS } from '../lib/product-type-photos';
 import { HERO_STRIP_PHOTOS } from './hero-photos';
 
 const QUOTES = [
@@ -13,7 +13,8 @@ const QUOTES = [
 ];
 const QUOTE_INTERVAL_MS = 5000;
 
-// Reveal timings: copy lines rise 48px over 1.2s, 0.3s apart from 0.15s; the visual then grows into place.
+// Reveal timings: copy lines rise 48px over 1.2s, 0.3s apart from 0.15s. The visual and the shop's camera and roll
+// set their own delays, so they count from the start of the reveal (0.6s, 1.0s, 1.4s) rather than after the copy.
 const LINE = rise(48, 1.2);
 const VISUAL: Variants = {
   hidden: { opacity: 0, scale: 0.85, y: 60 },
@@ -141,7 +142,12 @@ function RotatingQuote() {
   return (
     <div className="relative min-h-28">
       <AnimatePresence mode="wait">
-        <motion.figure key={index} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>
+        <motion.figure
+          key={index}
+          initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+        >
           <blockquote className="font-serif text-2xl italic leading-snug md:text-3xl">“{quote.text}”</blockquote>
           <figcaption className="mt-2 text-sm text-ink/60">— {quote.by}</figcaption>
         </motion.figure>
@@ -150,7 +156,14 @@ function RotatingQuote() {
   );
 }
 
-const SLIDE_EASE = { duration: 1.4, ease: REVEAL_EASE };
+/** Variants for a photo that slides in from `side`, settling at `tilt` degrees, `delay` seconds into the reveal. */
+function slideIn(side: 'left' | 'right', tilt: number, delay: number): Variants {
+  const direction = side === 'left' ? -1 : 1;
+  return {
+    hidden: { opacity: 0, x: 40 * direction, rotate: tilt * 2.5 },
+    shown: { opacity: 1, x: 0, rotate: tilt, transition: { duration: 1.4, delay, ease: REVEAL_EASE } },
+  };
+}
 
 /** A film camera and a film roll, overlapping and tilted; they slide in from either side at ~1.0s and ~1.4s. */
 function ShopVisual() {
@@ -158,19 +171,13 @@ function ShopVisual() {
     <div className="relative mx-auto aspect-square w-full max-w-lg">
       <div className="absolute inset-[8%] rounded-full bg-amber/30" />
       <motion.img
-        variants={{
-          hidden: { opacity: 0, x: -40, rotate: -16 },
-          shown: { opacity: 1, x: 0, rotate: -6, transition: { ...SLIDE_EASE, delay: 1.0 } },
-        }}
+        variants={slideIn('left', -6, 1.0)}
         src={PRODUCT_TYPE_PHOTOS.FILM_CAMERA}
         alt=""
         className="absolute left-0 top-[10%] w-[68%] rounded-2xl object-cover shadow-soft"
       />
       <motion.img
-        variants={{
-          hidden: { opacity: 0, x: 40, rotate: 16 },
-          shown: { opacity: 1, x: 0, rotate: 6, transition: { ...SLIDE_EASE, delay: 1.4 } },
-        }}
+        variants={slideIn('right', 6, 1.4)}
         src={PRODUCT_TYPE_PHOTOS.FILM_ROLL}
         alt=""
         className="absolute bottom-[4%] right-0 w-[52%] rounded-2xl object-cover shadow-soft"
@@ -210,10 +217,10 @@ const CHAT = [
 ];
 const EXPOSURE = ['ISO 800', 'f/2', '1/60', '+1 EV'];
 
-/** A mock chat about night film and metering neon, with the exposure it lands on. */
+/** A mock chat about night film and metering neon, with the exposure it lands on. Decorative, like the portfolio. */
 function AssistantVisual() {
   return (
-    <div className="mx-auto w-full max-w-lg space-y-3">
+    <div aria-hidden className="mx-auto w-full max-w-lg space-y-3">
       {CHAT.map(({ mine, text }) => (
         <p
           key={text}
@@ -222,7 +229,7 @@ function AssistantVisual() {
           {text}
         </p>
       ))}
-      <ul aria-label="Suggested exposure" className="flex flex-wrap items-center gap-2 pt-2 font-mono text-[11px] text-paper/70">
+      <ul className="flex flex-wrap items-center gap-2 pt-2 font-mono text-[11px] text-paper/70">
         {EXPOSURE.map((setting) => (
           <li key={setting} className="rounded-full border border-paper/30 px-2 py-0.5">
             {setting}

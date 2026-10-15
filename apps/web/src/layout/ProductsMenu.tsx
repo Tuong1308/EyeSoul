@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import { PRODUCT_TYPE_ENTRIES, PRODUCTS_PATH, productTypeFromParam } from '../lib/routes';
-import { PRODUCT_TYPE_PHOTOS } from '../lib/showcase-photos';
+import { PRODUCT_TYPE_PHOTOS } from '../lib/product-type-photos';
 
 /**
  * The header's "Products" entry. From lg up, hovering it or moving keyboard focus into it drops down a tile per
