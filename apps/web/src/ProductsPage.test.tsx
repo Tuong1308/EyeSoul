@@ -70,6 +70,22 @@ describe('Products page', () => {
     expect(screen.getAllByRole('region')).toHaveLength(3);
   });
 
+  it('says so when a Product Type has nothing featured, rather than showing an empty page', async () => {
+    server.use(http.get('http://api.test/homepage', () => HttpResponse.json({ ...homepage, rows: [] })));
+    renderApp('/products?type=film-roll');
+
+    expect(await screen.findByText('Nothing to show here yet. Check back soon.')).toBeInTheDocument();
+    expect(screen.queryByRole('region')).not.toBeInTheDocument();
+  });
+
+  it('marks the drop-down tile for the tab being shown, even with other query parameters', async () => {
+    renderApp('/products?utm_source=mail&type=film-roll');
+
+    expect(await screen.findAllByRole('region')).toEqual([screen.getByRole('region', { name: 'Film rolls' })]);
+    const menu = screen.getByRole('navigation', { name: 'Main' });
+    expect(within(menu).getByRole('link', { name: 'Film rolls' })).toHaveAttribute('aria-current', 'page');
+  });
+
   it('shows every row for a Product Type it does not know', async () => {
     renderApp('/products?type=lenses');
 

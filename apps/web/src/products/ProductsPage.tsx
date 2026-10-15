@@ -1,16 +1,13 @@
-import type { ProductType } from '@eyesoul/shared';
 import { Link, useSearchParams } from 'react-router';
 import { LoadError } from '../components/LoadError';
 import { useHomepage } from '../homepage/use-homepage';
-import { PRODUCT_TYPES, PRODUCTS_PATH } from '../lib/routes';
+import { PRODUCT_TYPE_ENTRIES, PRODUCTS_PATH, productTypeFromParam } from '../lib/routes';
 import { FeaturedRow } from './FeaturedRow';
 import { FeaturedRowsSkeleton } from './FeaturedRowsSkeleton';
 
 const TABS = [
   { label: 'All', path: PRODUCTS_PATH, type: null },
-  ...(Object.entries(PRODUCT_TYPES) as [ProductType, (typeof PRODUCT_TYPES)[ProductType]][]).map(
-    ([type, { label, path }]) => ({ label, path, type }),
-  ),
+  ...PRODUCT_TYPE_ENTRIES.map(([type, { label, path }]) => ({ label, path, type })),
 ];
 
 /**
@@ -19,7 +16,7 @@ const TABS = [
  */
 export function ProductsPage() {
   const [params] = useSearchParams();
-  const selected = TABS.find((tab) => tab.type && PRODUCT_TYPES[tab.type].param === params.get('type'))?.type ?? null;
+  const selected = productTypeFromParam(params.get('type'));
   const { data, isPending, isError, isFetching, refetch } = useHomepage();
   // Only a load with nothing to show is an error; a failed background refetch keeps the data on screen.
   const failed = isError && !data;
@@ -49,8 +46,9 @@ export function ProductsPage() {
             })}
           </ul>
         </nav>
-        {isPending && <FeaturedRowsSkeleton rows={selected ? 1 : TABS.length - 1} />}
+        {isPending && <FeaturedRowsSkeleton rows={selected ? 1 : PRODUCT_TYPE_ENTRIES.length} />}
         {failed && <LoadError subject="products" retrying={isFetching} onRetry={() => void refetch()} />}
+        {rows?.length === 0 && <p className="mt-16 text-sm text-ink/70">Nothing to show here yet. Check back soon.</p>}
       </div>
       {rows?.map((row) => <FeaturedRow key={row.productType} row={row} />)}
     </main>
