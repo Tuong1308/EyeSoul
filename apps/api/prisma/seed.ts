@@ -12,13 +12,17 @@ interface SeedProduct {
   sold?: boolean;
   condition?: { grade: ConditionGrade; note: string };
   featuredRank?: number;
+  /** How many Sample Photos were shot with this product. */
+  samplePhotos?: number;
 }
 
 // Film Rolls are deliberately left without featured products, so their row shows the newest-first fallback.
 // One Out of Stock Digital Camera and one Out of Stock Film Roll land on the homepage, so "Hết hàng" is visible.
+// Only 5 Film Rolls have Sample Photos (16 in all), so the homepage tops up past one photo per Film Roll.
+// A few cameras have Sample Photos too; the homepage must leave those out.
 const products: SeedProduct[] = [
   // Digital Cameras
-  { slug: 'fujifilm-x100vi', productType: 'DIGITAL_CAMERA', name: 'Fujifilm X100VI', priceVnd: 45_990_000, stock: 4, featuredRank: 1,
+  { slug: 'fujifilm-x100vi', productType: 'DIGITAL_CAMERA', name: 'Fujifilm X100VI', priceVnd: 45_990_000, stock: 4, featuredRank: 1, samplePhotos: 2,
     description: 'Máy ảnh compact ống kính cố định 23mm f/2, cảm biến 40MP với giả lập phim Fujifilm.' },
   { slug: 'sony-a7-iv-body', productType: 'DIGITAL_CAMERA', name: 'Sony A7 IV (Body)', priceVnd: 52_990_000, stock: 6, featuredRank: 2,
     description: 'Full-frame 33MP, quay 4K 60p, lấy nét mắt theo thời gian thực. Chỉ thân máy.' },
@@ -37,7 +41,7 @@ const products: SeedProduct[] = [
   { slug: 'leica-m6-1986-sold', productType: 'FILM_CAMERA', name: 'Leica M6 (1986)', priceVnd: 89_000_000, sold: true, featuredRank: 1,
     condition: { grade: 'A_PLUS', note: 'Gần như mới, đo sáng chuẩn, không trầy xước đáng kể.' },
     description: 'Máy rangefinder huyền thoại, khung ngắm 0.72x, đã bảo dưỡng tại Nhật.' },
-  { slug: 'canon-ae-1-program', productType: 'FILM_CAMERA', name: 'Canon AE-1 Program', priceVnd: 7_500_000, featuredRank: 2,
+  { slug: 'canon-ae-1-program', productType: 'FILM_CAMERA', name: 'Canon AE-1 Program', priceVnd: 7_500_000, featuredRank: 2, samplePhotos: 2,
     condition: { grade: 'A', note: 'Hoạt động tốt, có vài vết xước nhẹ ở nắp đáy.' },
     description: 'Máy SLR phổ biến nhất thập niên 80, kèm ống kính FD 50mm f/1.8.' },
   { slug: 'nikon-fm2-chrome', productType: 'FILM_CAMERA', name: 'Nikon FM2 Chrome', priceVnd: 9_800_000, featuredRank: 3,
@@ -57,22 +61,25 @@ const products: SeedProduct[] = [
     description: 'SLR chế độ Program, kèm ống kính MD Rokkor 50mm f/1.7.' },
 
   // Film Rolls
-  { slug: 'kodak-portra-400-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Portra 400 – 35mm – 36 kiểu', priceVnd: 420_000, stock: 40,
+  { slug: 'kodak-portra-400-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Portra 400 – 35mm – 36 kiểu', priceVnd: 420_000, stock: 40, samplePhotos: 5,
     description: 'Phim màu negative, tông da ấm, latitude rộng, hợp chụp chân dung.' },
   { slug: 'kodak-portra-400-120', productType: 'FILM_ROLL', name: 'Kodak Portra 400 – 120', priceVnd: 380_000, stock: 12,
     description: 'Phiên bản medium format của Portra 400 cho máy 6x6, 6x7.' },
-  { slug: 'ilford-hp5-plus-35mm-36', productType: 'FILM_ROLL', name: 'Ilford HP5 Plus 400 – 35mm – 36 kiểu', priceVnd: 230_000, stock: 25,
+  { slug: 'ilford-hp5-plus-35mm-36', productType: 'FILM_ROLL', name: 'Ilford HP5 Plus 400 – 35mm – 36 kiểu', priceVnd: 230_000, stock: 25, samplePhotos: 4,
     description: 'Phim đen trắng ISO 400, hạt mịn, đẩy ISO tốt.' },
-  { slug: 'kodak-gold-200-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Gold 200 – 35mm – 36 kiểu', priceVnd: 190_000, stock: 60,
+  { slug: 'kodak-gold-200-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Gold 200 – 35mm – 36 kiểu', priceVnd: 190_000, stock: 60, samplePhotos: 3,
     description: 'Phim màu ấm áp, màu vàng nắng, lựa chọn quen thuộc cho ngày đẹp trời.' },
-  { slug: 'cinestill-800t-35mm-36', productType: 'FILM_ROLL', name: 'CineStill 800T – 35mm – 36 kiểu', priceVnd: 480_000, stock: 8,
+  { slug: 'cinestill-800t-35mm-36', productType: 'FILM_ROLL', name: 'CineStill 800T – 35mm – 36 kiểu', priceVnd: 480_000, stock: 8, samplePhotos: 3,
     description: 'Phim điện ảnh cân bằng tungsten, quầng sáng đỏ đặc trưng khi chụp đêm.' },
-  { slug: 'kodak-ektar-100-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Ektar 100 – 35mm – 36 kiểu', priceVnd: 350_000, stock: 15,
+  { slug: 'kodak-ektar-100-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Ektar 100 – 35mm – 36 kiểu', priceVnd: 350_000, stock: 15, samplePhotos: 1,
     description: 'Hạt mịn nhất trong dòng phim màu negative, màu bão hoà cho phong cảnh.' },
   // Newest Film Roll, so an Out of Stock card shows in the fallback row.
   { slug: 'fujifilm-c200-35mm-36', productType: 'FILM_ROLL', name: 'Fujifilm C200 – 35mm – 36 kiểu', priceVnd: 165_000, stock: 0,
     description: 'Phim màu giá mềm, màu xanh mát đặc trưng của Fuji.' },
 ];
+
+// Portrait, landscape and square shots, like real film scans.
+const SAMPLE_PHOTO_SIZES = ['800/1000', '1000/700', '900/900'];
 
 async function main() {
   await prisma.product.deleteMany();
@@ -99,6 +106,14 @@ async function main() {
             { url: `https://picsum.photos/seed/${p.slug}-1/800/800`, alt: `${p.name}, ảnh chính`, position: 1 },
             { url: `https://picsum.photos/seed/${p.slug}-2/800/800`, alt: `${p.name}, góc khác`, position: 2 },
           ],
+        },
+        samplePhotos: {
+          create: Array.from({ length: p.samplePhotos ?? 0 }, (_, n) => ({
+            url: `https://picsum.photos/seed/${p.slug}-sample-${n + 1}/${SAMPLE_PHOTO_SIZES[n % SAMPLE_PHOTO_SIZES.length]}`,
+            alt: `Ảnh chụp bằng ${p.name} (${n + 1})`,
+            // Hours apart, so photos of different products interleave by date.
+            createdAt: new Date(Date.UTC(2026, 9, 1) + (n * 7 + index) * 3_600_000),
+          })),
         },
       },
     });

@@ -11,9 +11,10 @@ describe('Homepage', () => {
     const digital = await screen.findByRole('region', { name: 'Máy ảnh digital' });
     const film = screen.getByRole('region', { name: 'Máy ảnh film' });
     const rolls = screen.getByRole('region', { name: 'Cuộn film' });
+    const samples = screen.getByRole('region', { name: 'Ảnh mẫu từ film' });
 
     const regions = screen.getAllByRole('region');
-    expect(regions).toEqual([digital, film, rolls]);
+    expect(regions).toEqual([digital, film, rolls, samples]);
 
     expect(within(digital).getByText('Fujifilm X100VI')).toBeInTheDocument();
     expect(within(digital).getByText('45.990.000 ₫')).toBeInTheDocument();
@@ -71,5 +72,30 @@ describe('Homepage', () => {
 
     expect(await screen.findByRole('heading', { name: 'Cuộn film' })).toBeInTheDocument();
     expect(screen.queryByRole('region')).not.toBeInTheDocument();
+  });
+
+  it('shows each Sample Photo labelled with the Film Roll it was shot on', async () => {
+    renderApp('/');
+
+    const samples = await screen.findByRole('region', { name: 'Ảnh mẫu từ film' });
+    const portra = within(samples).getByRole('link', { name: /Kodak Portra 400/ });
+
+    expect(within(portra).getByRole('img', { name: 'Phố cổ Hội An lúc hoàng hôn' })).toHaveAttribute(
+      'src',
+      'https://img.test/sample-portra.jpg',
+    );
+    expect(within(portra).getByText('Kodak Portra 400')).toBeInTheDocument();
+    const hp5 = within(samples).getByRole('link', { name: /Ilford HP5 Plus 400/ });
+    expect(within(hp5).getByText('Ilford HP5 Plus 400')).toBeInTheDocument();
+  });
+
+  it(`goes to the Film Roll's page when a Sample Photo is clicked`, async () => {
+    renderApp('/');
+
+    const samples = await screen.findByRole('region', { name: 'Ảnh mẫu từ film' });
+    fireEvent.click(within(samples).getByRole('link', { name: /Ilford HP5 Plus 400/ }));
+
+    expect(await screen.findByRole('heading', { name: 'Sản phẩm' })).toBeInTheDocument();
+    expect(screen.getByText('ilford-hp5-plus-35mm-36')).toBeInTheDocument();
   });
 });

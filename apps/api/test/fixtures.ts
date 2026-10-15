@@ -23,10 +23,11 @@ let counter = 0;
 type ProductFixture = Partial<Omit<Prisma.ProductCreateInput, 'productType'>> & {
   productType: ProductType;
   photos?: { url: string; alt: string; position: number }[];
+  samplePhotos?: { url: string; alt: string; createdAt: Date }[];
 };
 
 /** Inserts a product with sensible defaults; `createdAt` defaults to strictly increasing values. */
-export async function createProduct({ photos, ...data }: ProductFixture) {
+export async function createProduct({ photos, samplePhotos, ...data }: ProductFixture) {
   counter += 1;
   return db.product.create({
     data: {
@@ -39,6 +40,7 @@ export async function createProduct({ photos, ...data }: ProductFixture) {
       ...(data.productType === 'FILM_CAMERA' ? { conditionGrade: 'A', conditionNote: 'Ổn' } : {}),
       ...data,
       photos: photos ? { create: photos } : undefined,
+      samplePhotos: samplePhotos ? { create: samplePhotos } : undefined,
     },
   });
 }

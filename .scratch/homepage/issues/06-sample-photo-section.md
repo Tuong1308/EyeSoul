@@ -6,11 +6,11 @@ Spec: `.scratch/homepage/spec.md`
 
 **Blocked by:** 01
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The seed includes Sample Photos for fewer than 12 distinct Film Rolls (so the top-up rule is exercised), plus some Sample Photos of cameras
-- [ ] The homepage endpoint returns `samplePhotos`: only photos of Film Rolls; first the newest photo of each distinct Film Roll (newest first), then the next-newest remaining photos, up to 12
-- [ ] Each item carries its Film Roll's slug and name
-- [ ] The grid uses mixed sizes; the Film Roll name label shows on hover on desktop and is always visible on touch screens
-- [ ] Clicking a photo goes to that Film Roll's placeholder product detail route
-- [ ] API tests cover the Film-Roll-only rule, one-per-Film-Roll priority, top-up and the cap; web tests cover labels and navigation
+- [x] The seed includes Sample Photos for fewer than 12 distinct Film Rolls (so the top-up rule is exercised), plus some Sample Photos of cameras
+- [x] The homepage endpoint returns `samplePhotos`: only photos of Film Rolls; first the newest photo of each distinct Film Roll (newest first), then the next-newest remaining photos, up to 12
+- [x] Each item carries its Film Roll's slug and name
+- [x] The grid uses mixed sizes; the Film Roll name label shows on hover on desktop and is always visible on touch screens
+- [x] Clicking a photo goes to that Film Roll's placeholder product detail route
+- [x] API tests cover the Film-Roll-only rule, one-per-Film-Roll priority, top-up and the cap; web tests cover labels and navigation

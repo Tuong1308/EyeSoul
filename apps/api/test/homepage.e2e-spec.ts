@@ -170,6 +170,72 @@ describe('GET /homepage', () => {
     ]);
   });
 
+  /** A Sample Photo taken on 2026-03-<day>, named after its alt text. */
+  function shot(alt: string, day: number) {
+    return { url: `https://img.test/${alt}.jpg`, alt, createdAt: new Date(Date.UTC(2026, 2, day)) };
+  }
+
+  it('shows only Sample Photos of Film Rolls, each with its Film Roll', async () => {
+    await createProduct({ productType: 'FILM_CAMERA', name: 'Canon AE-1', samplePhotos: [shot('camera shot', 9)] });
+    await createProduct({ productType: 'DIGITAL_CAMERA', name: 'Fujifilm X100VI', samplePhotos: [shot('digital shot', 8)] });
+    await createProduct({
+      productType: 'FILM_ROLL',
+      slug: 'kodak-portra-400',
+      name: 'Kodak Portra 400',
+      samplePhotos: [shot('portra shot', 1)],
+    });
+
+    const { samplePhotos } = await getHomepage();
+
+    expect(samplePhotos).toEqual([
+      {
+        id: expect.any(String),
+        url: 'https://img.test/portra shot.jpg',
+        alt: 'portra shot',
+        filmRoll: { slug: 'kodak-portra-400', name: 'Kodak Portra 400' },
+      },
+    ]);
+  });
+
+  async function sampleAlts() {
+    const { samplePhotos } = await getHomepage();
+    return samplePhotos.map((photo) => photo.alt);
+  }
+
+  it('shows the newest photo of each distinct Film Roll first, newest first, then the remaining photos newest first', async () => {
+    await createProduct({ productType: 'FILM_ROLL', samplePhotos: [shot('A old', 1), shot('A newest', 10), shot('A mid', 5)] });
+    await createProduct({ productType: 'FILM_ROLL', samplePhotos: [shot('B newest', 7), shot('B old', 2)] });
+    await createProduct({ productType: 'FILM_ROLL', samplePhotos: [shot('C only', 4)] });
+
+    expect(await sampleAlts()).toEqual(['A newest', 'B newest', 'C only', 'A mid', 'B old', 'A old']);
+  });
+
+  it('caps the Sample Photos at 12, keeping one per Film Roll before topping up', async () => {
+    // 10 Film Rolls with one older photo each, plus one roll with 5 newer photos.
+    for (let day = 1; day <= 10; day += 1) {
+      await createProduct({ productType: 'FILM_ROLL', samplePhotos: [shot(`roll ${day}`, day)] });
+    }
+    await createProduct({
+      productType: 'FILM_ROLL',
+      samplePhotos: [shot('busy 1', 21), shot('busy 2', 22), shot('busy 3', 23), shot('busy 4', 24), shot('busy 5', 25)],
+    });
+
+    expect(await sampleAlts()).toEqual([
+      'busy 5',
+      'roll 10',
+      'roll 9',
+      'roll 8',
+      'roll 7',
+      'roll 6',
+      'roll 5',
+      'roll 4',
+      'roll 3',
+      'roll 2',
+      'roll 1',
+      'busy 4',
+    ]);
+  });
+
   it('allows the configured web origin through CORS', async () => {
     const res = await request(app.getHttpServer()).get('/homepage').set('Origin', 'http://localhost:5173');
 

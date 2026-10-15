@@ -24,8 +24,17 @@ export interface HomepageRow {
   products: ProductCard[];
 }
 
+/** A photo shot on a Film Roll, linking to that Film Roll. */
+export interface HomepageSamplePhoto {
+  id: string;
+  url: string;
+  alt: string;
+  filmRoll: { slug: string; name: string };
+}
+
 export interface HomepageResponse {
   rows: HomepageRow[];
+  samplePhotos: HomepageSamplePhoto[];
 }
 
 export interface SearchSuggestionsResponse {
