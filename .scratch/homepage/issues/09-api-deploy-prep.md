@@ -6,10 +6,10 @@ Spec: `.scratch/homepage/spec.md`
 
 **Blocked by:** 01
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A Dockerfile builds and runs the API image
-- [ ] Database URL, allowed web origin and port are configured via environment variables, with an example env file that contains no real secrets
-- [ ] Migrations can be applied against a production database URL with one documented command
-- [ ] The built image starts locally against the Docker Compose Postgres and serves the homepage endpoint
-- [ ] The README documents local dev, testing and building the image
+- [x] A Dockerfile builds and runs the API image
+- [x] Database URL, allowed web origin and port are configured via environment variables, with an example env file that contains no real secrets
+- [x] Migrations can be applied against a production database URL with one documented command
+- [x] The built image starts locally against the Docker Compose Postgres and serves the homepage endpoint
+- [x] The README documents local dev, testing and building the image

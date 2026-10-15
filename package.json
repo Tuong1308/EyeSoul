@@ -12,7 +12,10 @@
     "dev:api": "npm run dev -w @eyesoul/api",
     "dev:web": "npm run dev -w @eyesoul/web",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present"
+    "test": "npm run test --workspaces --if-present",
+    "api:build": "docker compose --profile api build api",
+    "db:deploy": "npm run db:deploy -w @eyesoul/api",
+    "api:up": "docker compose --profile api up --build api"
   },
   "allowScripts": {
     "prisma@6.19.3": true,

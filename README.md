@@ -41,3 +41,37 @@ npm test
 ```
 
 API tests run over HTTP against the `eyesoul_test` database in the Docker Postgres (`npm run db:up` first); they migrate it automatically. Web tests render the app with the network mocked by MSW.
+
+## API image
+
+`apps/api/Dockerfile` builds a production image of the API. Build it from the repo root:
+
+```sh
+npm run api:build    # builds the eyesoul-api image
+```
+
+The image reads `DATABASE_URL`, `WEB_ORIGIN` and `PORT` from its environment and refuses to start if the first two are missing. It does not run migrations.
+
+To try the image locally against the Docker Compose Postgres (after `npm run db:setup`):
+
+```sh
+npm run api:up    # builds and serves http://localhost:3000/homepage
+```
+
+If port 3000 is taken (e.g. by `dev:api`), pick another host port: `API_HOST_PORT=3001 npm run api:up` in bash, or `$env:API_HOST_PORT=3001; npm run api:up` in PowerShell.
+
+## Production database
+
+Production uses Supabase Postgres. Apply migrations to it from a checkout with one command, passing the connection string in the environment (it takes precedence over `apps/api/.env`):
+
+```sh
+# bash
+DATABASE_URL="postgresql://postgres.<project-ref>:<password>@<host>:5432/postgres" npm run db:deploy
+```
+
+```powershell
+# PowerShell
+$env:DATABASE_URL="postgresql://postgres.<project-ref>:<password>@<host>:5432/postgres"; npm run db:deploy
+```
+
+Use Supabase's direct or session-mode connection (port 5432) for migrations. Never seed production. Nothing is deployed yet; a container host only needs the image plus the three environment variables above.

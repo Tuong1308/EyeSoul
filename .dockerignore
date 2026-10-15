@@ -1,0 +1,15 @@
+**/node_modules
+**/dist
+**/coverage
+**/.env
+**/.env.*
+**/*.log
+.git
+.agents
+.claude
+.scratch
+docs
+docker
+# The API image only needs the web app's package.json, so npm ci matches the workspace lockfile.
+apps/web/*
+!apps/web/package.json

@@ -16,5 +16,22 @@ services:
       timeout: 3s
       retries: 20
 
+  # The production API image, run against the local Postgres. Opt-in: `npm run api:up`.
+  api:
+    profiles: ["api"]
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: eyesoul-api
+    environment:
+      DATABASE_URL: postgresql://eyesoul:eyesoul@postgres:5432/eyesoul
+      WEB_ORIGIN: http://localhost:5173
+      PORT: 3000
+    ports:
+      - "${API_HOST_PORT:-3000}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   pgdata:

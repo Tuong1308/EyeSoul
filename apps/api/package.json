@@ -10,7 +10,8 @@
     "test": "jest --runInBand",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
-    "db:setup": "prisma migrate deploy && prisma db seed"
+    "db:setup": "npm run db:deploy && prisma db seed",
+    "db:deploy": "prisma migrate deploy"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
