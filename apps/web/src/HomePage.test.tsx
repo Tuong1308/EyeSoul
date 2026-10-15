@@ -1,5 +1,7 @@
-import { fireEvent, screen, within } from '@testing-library/react';
+import type { HomepageResponse } from '@eyesoul/shared';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
+import { onTestFinished } from 'vitest';
 import { homepage, serveHomepage } from './test/homepage-fixture';
 import { renderApp } from './test/render-app';
 import { server } from './test/server';
@@ -32,10 +34,9 @@ describe('Homepage', () => {
     const hero = screen.getByRole('region', { name: 'About Eye Soul' });
     const see = within(hero).getByRole('link', { name: 'See sample photos' });
     expect(see).toHaveAttribute('href', '#sample-photos');
-    const target = document.getElementById('sample-photos')!;
-    expect(within(target).getByRole('status', { name: 'Loading photos' })).toBeInTheDocument();
-
-    expect(await within(target).findByRole('region', { name: 'Shot on our film' })).toBeInTheDocument();
+    const samples = screen.getByRole('region', { name: 'Shot on our film' });
+    expect(samples).toHaveAttribute('id', 'sample-photos');
+    expect(within(samples).getByRole('status', { name: 'Loading photos' })).toBeInTheDocument();
   });
 
   it('keeps the hero film strip and photos out of the way of assistive tech: the two buttons are all it offers', () => {
@@ -97,8 +98,8 @@ describe('Homepage', () => {
   it('shows each Sample Photo labelled with the Film Roll it was shot on', async () => {
     renderApp('/');
 
-    const samples = await screen.findByRole('region', { name: 'Shot on our film' });
-    const portra = within(samples).getByRole('link', { name: /Kodak Portra 400/ });
+    const samples = screen.getByRole('region', { name: 'Shot on our film' });
+    const portra = await within(samples).findByRole('link', { name: /Kodak Portra 400/ });
 
     expect(within(portra).getByRole('img', { name: 'Hoi An old town at sunset' })).toHaveAttribute(
       'src',
@@ -109,11 +110,49 @@ describe('Homepage', () => {
     expect(within(hp5).getByText('Ilford HP5 Plus 400')).toBeInTheDocument();
   });
 
+  it('heads the Sample Photos "Shot on our film", kicker "Real photos · Shot on film"', () => {
+    renderApp('/');
+
+    const samples = screen.getByRole('region', { name: 'Shot on our film' });
+    expect(within(samples).getByRole('heading', { level: 2, name: 'Shot on our film' })).toBeInTheDocument();
+    expect(within(samples).getByText('Real photos · Shot on film')).toBeInTheDocument();
+  });
+
+  it('scrolls the row of Sample Photos back and forth from "Previous photos" and "Next photos"', async () => {
+    // jsdom can't scroll elements, so this stands in for the browser's scrollBy and records each call.
+    const scrollBy = vi.fn();
+    Object.defineProperty(HTMLElement.prototype, 'scrollBy', { value: scrollBy, configurable: true });
+    onTestFinished(() => {
+      delete (HTMLElement.prototype as Partial<HTMLElement>).scrollBy;
+    });
+    renderApp('/');
+
+    const samples = screen.getByRole('region', { name: 'Shot on our film' });
+    const row = await within(samples).findByRole('list', { name: 'Sample photos' });
+    Object.defineProperty(row, 'clientWidth', { value: 1000 });
+    fireEvent.click(within(samples).getByRole('button', { name: 'Next photos' }));
+    fireEvent.click(within(samples).getByRole('button', { name: 'Previous photos' }));
+
+    expect(scrollBy.mock.contexts).toEqual([row, row]);
+    const [[next], [previous]] = scrollBy.mock.calls;
+    expect(next.left).toBeGreaterThan(0);
+    expect(previous.left).toBeLessThan(0);
+  });
+
+  it('leaves the Sample Photo band out when there are no Sample Photos', async () => {
+    const noPhotos: HomepageResponse = { ...homepage, samplePhotos: [] };
+    server.use(http.get('http://api.test/homepage', () => HttpResponse.json(noPhotos)));
+    renderApp('/');
+
+    expect(await screen.findByRole('region', { name: 'AI assistant' })).toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByRole('region', { name: 'Shot on our film' })).not.toBeInTheDocument());
+  });
+
   it(`goes to the Film Roll's page when a Sample Photo is clicked`, async () => {
     renderApp('/');
 
-    const samples = await screen.findByRole('region', { name: 'Shot on our film' });
-    fireEvent.click(within(samples).getByRole('link', { name: /Ilford HP5 Plus 400/ }));
+    const samples = screen.getByRole('region', { name: 'Shot on our film' });
+    fireEvent.click(await within(samples).findByRole('link', { name: /Ilford HP5 Plus 400/ }));
 
     expect(await screen.findByRole('heading', { name: 'Product' })).toBeInTheDocument();
     expect(screen.getByText('ilford-hp5-plus-35mm-36')).toBeInTheDocument();
@@ -132,14 +171,16 @@ describe('Homepage loading and errors', () => {
     );
     renderApp('/');
 
-    const loading = screen.getByRole('status', { name: 'Loading photos' });
+    const samples = screen.getByRole('region', { name: 'Shot on our film' });
+    const loading = within(samples).getByRole('status', { name: 'Loading photos' });
     expect(loading).toHaveTextContent('Loading photos…');
+    expect(within(samples).queryByRole('link')).not.toBeInTheDocument();
     expect(screen.getByRole('region', { name: 'About Eye Soul' })).toBeInTheDocument();
-    expect(screen.queryByRole('region', { name: 'Shot on our film' })).not.toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'The shop' })).toBeInTheDocument();
 
     respond();
 
-    expect(await screen.findByRole('region', { name: 'Shot on our film' })).toBeInTheDocument();
+    expect(await within(samples).findByRole('link', { name: /Kodak Portra 400/ })).toBeInTheDocument();
     expect(screen.queryByRole('status', { name: 'Loading photos' })).not.toBeInTheDocument();
   });
 
@@ -152,14 +193,16 @@ describe('Homepage loading and errors', () => {
     );
     renderApp('/');
 
-    const error = await screen.findByRole('alert');
+    const samples = screen.getByRole('region', { name: 'Shot on our film' });
+    const error = await within(samples).findByRole('alert');
     expect(error).toHaveTextContent('Couldn’t load the photos');
-    expect(screen.queryByRole('region', { name: 'Shot on our film' })).not.toBeInTheDocument();
+    expect(within(samples).queryByRole('link')).not.toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'The shop' })).toBeInTheDocument();
 
     failing = false;
     fireEvent.click(within(error).getByRole('button', { name: 'Try again' }));
 
-    expect(await screen.findByRole('region', { name: 'Shot on our film' })).toBeInTheDocument();
+    expect(await within(samples).findByRole('link', { name: /Kodak Portra 400/ })).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 });

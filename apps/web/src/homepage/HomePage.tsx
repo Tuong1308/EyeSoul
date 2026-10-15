@@ -1,28 +1,14 @@
-import { LoadError } from '../components/LoadError';
 import { Hero } from './Hero';
-import { HomePageSkeleton } from './HomePageSkeleton';
-import { SamplePhotoGrid } from './SamplePhotoGrid';
+import { SamplePhotos } from './SamplePhotos';
 import { Spotlights } from './Spotlights';
-import { useHomepage } from './use-homepage';
 
+/** The hero and Spotlights need no data and show at once; only the Sample Photo band waits on the API. */
 export function HomePage() {
-  const { data, isPending, isError, isFetching, refetch } = useHomepage();
-  // Only a load with nothing to show is an error; a failed background refetch keeps the data on screen.
-  const failed = isError && !data;
   return (
-    <main className="pb-24">
+    <main>
       <Hero />
       <Spotlights />
-      {/* The hero's "See sample photos" target: always on the page, so the button works while the photos load too. */}
-      <div id="sample-photos" className="scroll-mt-24">
-        {(isPending || failed) && (
-          <div className="frame">
-            {isPending && <HomePageSkeleton />}
-            {failed && <LoadError subject="photos" retrying={isFetching} onRetry={() => void refetch()} />}
-          </div>
-        )}
-        {data && <SamplePhotoGrid photos={data.samplePhotos} />}
-      </div>
+      <SamplePhotos />
     </main>
   );
 }
