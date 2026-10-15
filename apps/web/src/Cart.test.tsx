@@ -22,7 +22,7 @@ describe('Guest Cart', () => {
   beforeEach(serveHomepage);
 
   it('adds a product from its card and shows the count in the header', async () => {
-    renderApp('/');
+    renderApp('/products');
     expect(screen.getByRole('button', { name: 'Cart, 0 items' })).toBeInTheDocument();
 
     const portra = await findCard('Kodak Portra 400');
@@ -35,7 +35,7 @@ describe('Guest Cart', () => {
   });
 
   it('lists each line with photo, unit price, quantity and line total, plus the subtotal, in the mini-cart', async () => {
-    renderApp('/');
+    renderApp('/products');
 
     const portra = await findCard('Kodak Portra 400');
     addToCart(portra);
@@ -58,7 +58,7 @@ describe('Guest Cart', () => {
   });
 
   it('holds a Film Camera at quantity 1, with no quantity stepper', async () => {
-    renderApp('/');
+    renderApp('/products');
 
     const canon = await findCard('Canon AE-1 Program');
     addToCart(canon);
@@ -74,7 +74,7 @@ describe('Guest Cart', () => {
   });
 
   it('changes quantities and removes lines in the mini-cart, down to an empty Cart', async () => {
-    renderApp('/');
+    renderApp('/products');
 
     addToCart(await findCard('Kodak Portra 400'));
     const drawer = openMiniCart();
@@ -101,7 +101,7 @@ describe('Guest Cart', () => {
   });
 
   it('stops the quantity at 1 instead of going lower', async () => {
-    renderApp('/');
+    renderApp('/products');
 
     addToCart(await findCard('Kodak Portra 400'));
     const quantity = within(openMiniCart()).getByRole('group', { name: 'Quantity' });
@@ -110,7 +110,7 @@ describe('Guest Cart', () => {
   });
 
   it('closes the mini-cart from its close button', async () => {
-    renderApp('/');
+    renderApp('/products');
 
     openMiniCart();
     fireEvent.click(screen.getByRole('button', { name: 'Close cart' }));
@@ -119,7 +119,7 @@ describe('Guest Cart', () => {
   });
 
   it('goes to the checkout placeholder from "Checkout"', async () => {
-    renderApp('/');
+    renderApp('/products');
 
     addToCart(await findCard('Kodak Portra 400'));
     const checkout = within(openMiniCart()).getByRole('link', { name: 'Checkout' });
@@ -131,7 +131,7 @@ describe('Guest Cart', () => {
   });
 
   it('keeps the Cart, with each line as it was added, after a reload', async () => {
-    const firstVisit = renderApp('/');
+    const firstVisit = renderApp('/products');
     const portra = await findCard('Kodak Portra 400');
     addToCart(portra);
     addToCart(portra);
@@ -140,7 +140,7 @@ describe('Guest Cart', () => {
 
     // The shop's data has moved on since: the snapshot in the Cart is what the shopper added.
     server.use(http.get('http://api.test/homepage', () => HttpResponse.json({ rows: [] })));
-    renderApp('/');
+    renderApp('/products');
 
     expect(screen.getByRole('button', { name: 'Cart, 3 items' })).toBeInTheDocument();
     const drawer = openMiniCart();
@@ -155,14 +155,14 @@ describe('Guest Cart', () => {
 
   it('starts empty when the saved Cart is unreadable', async () => {
     localStorage.setItem(STORAGE_KEY, '{not json');
-    renderApp('/');
+    renderApp('/products');
 
     expect(screen.getByRole('button', { name: 'Cart, 0 items' })).toBeInTheDocument();
     expect(within(openMiniCart()).getByText('Your cart is empty.')).toBeInTheDocument();
   });
 
   it('offers no add button on Out of Stock cards', async () => {
-    renderApp('/');
+    renderApp('/products');
 
     const c200 = await findCard('Fujifilm C200');
     expect(within(c200).queryByRole('button', { name: 'Add to cart' })).not.toBeInTheDocument();
@@ -170,7 +170,7 @@ describe('Guest Cart', () => {
   });
 
   it('tells screen reader users which product each add button is for', async () => {
-    renderApp('/');
+    renderApp('/products');
 
     const portra = await findCard('Kodak Portra 400');
     expect(within(portra).getByRole('button', { name: 'Add to cart' })).toHaveAccessibleDescription('Kodak Portra 400');

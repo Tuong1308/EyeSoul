@@ -61,8 +61,6 @@ describe('Placeholder pages', () => {
   beforeEach(serveHomepage);
 
   it.each([
-    ['/products', 'Products'],
-    ['/products?type=film-camera', 'Products'],
     ['/checkout', 'Checkout'],
     ['/portfolio', 'Portfolio'],
     ['/assistant', 'AI assistant'],

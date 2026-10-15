@@ -1,6 +1,5 @@
-import { FeaturedRow } from './FeaturedRow';
+import { LoadError } from '../components/LoadError';
 import { Hero } from './Hero';
-import { HomePageError } from './HomePageError';
 import { HomePageSkeleton } from './HomePageSkeleton';
 import { SamplePhotoGrid } from './SamplePhotoGrid';
 import { useHomepage } from './use-homepage';
@@ -14,9 +13,8 @@ export function HomePage() {
       <div className="frame">
         <Hero />
         {isPending && <HomePageSkeleton />}
-        {failed && <HomePageError retrying={isFetching} onRetry={() => void refetch()} />}
+        {failed && <LoadError subject="photos" retrying={isFetching} onRetry={() => void refetch()} />}
       </div>
-      {data?.rows.map((row) => <FeaturedRow key={row.productType} row={row} />)}
       {data && <SamplePhotoGrid photos={data.samplePhotos} />}
     </main>
   );

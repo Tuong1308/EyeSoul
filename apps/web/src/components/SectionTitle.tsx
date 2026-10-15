@@ -24,3 +24,13 @@ export function SectionTitle({ id, kicker, lead, emphasis, action }: SectionTitl
     </header>
   );
 }
+
+/** The shape of a SectionTitle while its section loads: the black top rule, the kicker and the large serif title. */
+export function SectionTitleSkeleton() {
+  return (
+    <div className="border-t border-ink pt-6">
+      <div className="h-3 w-40 animate-pulse rounded bg-line" />
+      <div className="mt-3 h-9 w-72 max-w-full animate-pulse rounded bg-line md:h-14 md:w-[28rem]" />
+    </div>
+  );
+}

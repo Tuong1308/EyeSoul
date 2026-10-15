@@ -21,6 +21,7 @@ import {
   ProductPlaceholderPage,
   SearchResultsPlaceholderPage,
 } from './placeholders/PlaceholderPage';
+import { ProductsPage } from './products/ProductsPage';
 import { SessionProvider } from './session/session-context';
 
 export function AppProviders({ queryClient, children }: { queryClient: QueryClient; children: ReactNode }) {
@@ -38,8 +39,7 @@ export function AppRoutes() {
     <Routes>
       <Route element={<SiteLayout />}>
         <Route path="/" element={<HomePage />} />
-        {/* Stands in for the Products page (any `?type=`) until it is built. */}
-        <Route path={PRODUCTS_PATH} element={<PlaceholderPage title="Products" />} />
+        <Route path={PRODUCTS_PATH} element={<ProductsPage />} />
         <Route path={productPath(':slug')} element={<ProductPlaceholderPage />} />
         <Route path={SEARCH_PATH} element={<SearchResultsPlaceholderPage />} />
         <Route path={LOGIN_PATH} element={<LoginPlaceholderPage />} />

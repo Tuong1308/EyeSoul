@@ -28,7 +28,7 @@ describe('Header navigation', () => {
     expect(products).not.toHaveAttribute('aria-current');
     fireEvent.click(products);
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Products' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Our products' })).toBeInTheDocument();
     expect(within(mainNav()).getByRole('link', { name: 'Products' })).toHaveAttribute('aria-current', 'page');
   });
 
@@ -43,13 +43,13 @@ describe('Header navigation', () => {
     expect(link).toHaveAttribute('href', path);
     fireEvent.click(link);
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Products' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Our products' })).toBeInTheDocument();
   });
 
   it('marks the chosen Product Type as the current page, and Products as its current section', async () => {
     renderApp('/products?type=film-camera');
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Products' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Our products' })).toBeInTheDocument();
     expect(within(mainNav()).getByRole('link', { name: 'Film cameras' })).toHaveAttribute('aria-current', 'page');
     expect(within(mainNav()).getByRole('link', { name: 'Products' })).toHaveAttribute('aria-current', 'true');
   });
@@ -89,7 +89,7 @@ describe('Header navigation', () => {
     expect(menuButton).toHaveAttribute('aria-controls', nav.id);
 
     fireEvent.click(within(nav).getByRole('link', { name: 'Film cameras' }));
-    expect(await screen.findByRole('heading', { level: 1, name: 'Products' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Our products' })).toBeInTheDocument();
     expect(menuButton).toHaveAttribute('aria-expanded', 'false');
   });
 
@@ -98,7 +98,7 @@ describe('Header navigation', () => {
 
     fireEvent.click(within(header()).getByRole('link', { name: 'Eye Soul, home' }));
 
-    expect(await screen.findByRole('region', { name: 'Digital cameras' })).toBeInTheDocument();
+    expect(await screen.findByRole('region', { name: 'About Eye Soul' })).toBeInTheDocument();
   });
 });
 
