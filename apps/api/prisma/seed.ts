@@ -15,6 +15,7 @@ interface SeedProduct {
 }
 
 // Film Rolls are deliberately left without featured products, so their row shows the newest-first fallback.
+// One Out of Stock Digital Camera and one Out of Stock Film Roll land on the homepage, so "Hết hàng" is visible.
 const products: SeedProduct[] = [
   // Digital Cameras
   { slug: 'fujifilm-x100vi', productType: 'DIGITAL_CAMERA', name: 'Fujifilm X100VI', priceVnd: 45_990_000, stock: 4, featuredRank: 1,
@@ -25,7 +26,7 @@ const products: SeedProduct[] = [
     description: 'Full-frame nhỏ gọn cho người mới, kèm ống kính kit RF 24-50mm f/4.5-6.3.' },
   { slug: 'nikon-zf-body', productType: 'DIGITAL_CAMERA', name: 'Nikon Zf (Body)', priceVnd: 44_990_000, stock: 2,
     description: 'Thiết kế hoài cổ lấy cảm hứng từ Nikon FM2, cảm biến full-frame 24.5MP.' },
-  { slug: 'ricoh-gr-iiix', productType: 'DIGITAL_CAMERA', name: 'Ricoh GR IIIx', priceVnd: 26_990_000, stock: 0,
+  { slug: 'ricoh-gr-iiix', productType: 'DIGITAL_CAMERA', name: 'Ricoh GR IIIx', priceVnd: 26_990_000, stock: 0, featuredRank: 3,
     description: 'Máy ảnh đường phố bỏ túi, ống kính 40mm tương đương, cảm biến APS-C.' },
   { slug: 'fujifilm-x-t50-kit-15-45', productType: 'DIGITAL_CAMERA', name: 'Fujifilm X-T50 kèm Kit 15-45mm', priceVnd: 36_490_000, stock: 5,
     description: 'Vòng xoay giả lập phim ngay trên thân máy, cảm biến 40MP, chống rung trong thân.' },
@@ -60,8 +61,6 @@ const products: SeedProduct[] = [
     description: 'Phim màu negative, tông da ấm, latitude rộng, hợp chụp chân dung.' },
   { slug: 'kodak-portra-400-120', productType: 'FILM_ROLL', name: 'Kodak Portra 400 – 120', priceVnd: 380_000, stock: 12,
     description: 'Phiên bản medium format của Portra 400 cho máy 6x6, 6x7.' },
-  { slug: 'fujifilm-c200-35mm-36', productType: 'FILM_ROLL', name: 'Fujifilm C200 – 35mm – 36 kiểu', priceVnd: 165_000, stock: 0,
-    description: 'Phim màu giá mềm, màu xanh mát đặc trưng của Fuji.' },
   { slug: 'ilford-hp5-plus-35mm-36', productType: 'FILM_ROLL', name: 'Ilford HP5 Plus 400 – 35mm – 36 kiểu', priceVnd: 230_000, stock: 25,
     description: 'Phim đen trắng ISO 400, hạt mịn, đẩy ISO tốt.' },
   { slug: 'kodak-gold-200-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Gold 200 – 35mm – 36 kiểu', priceVnd: 190_000, stock: 60,
@@ -70,6 +69,9 @@ const products: SeedProduct[] = [
     description: 'Phim điện ảnh cân bằng tungsten, quầng sáng đỏ đặc trưng khi chụp đêm.' },
   { slug: 'kodak-ektar-100-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Ektar 100 – 35mm – 36 kiểu', priceVnd: 350_000, stock: 15,
     description: 'Hạt mịn nhất trong dòng phim màu negative, màu bão hoà cho phong cảnh.' },
+  // Newest Film Roll, so an Out of Stock card shows in the fallback row.
+  { slug: 'fujifilm-c200-35mm-36', productType: 'FILM_ROLL', name: 'Fujifilm C200 – 35mm – 36 kiểu', priceVnd: 165_000, stock: 0,
+    description: 'Phim màu giá mềm, màu xanh mát đặc trưng của Fuji.' },
 ];
 
 async function main() {

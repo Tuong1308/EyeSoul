@@ -8,7 +8,7 @@ import { productPath } from '../lib/routes';
 export function ProductCardView({ product }: { product: ProductCard }) {
   const nameId = useId();
   return (
-    <article aria-labelledby={nameId} className="relative rounded-xl2 bg-card p-3 shadow-soft">
+    <article aria-labelledby={nameId} className="relative h-full rounded-xl2 bg-card p-3 shadow-soft">
       <div className="grain relative aspect-square overflow-hidden rounded-xl bg-line">
         {product.photo && (
           <img src={product.photo.url} alt={product.photo.alt} loading="lazy" className="h-full w-full object-cover" />
