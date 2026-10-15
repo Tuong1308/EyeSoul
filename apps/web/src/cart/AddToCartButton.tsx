@@ -5,11 +5,15 @@ import { canAdd } from './cart-store';
 
 const CONFIRMATION_MS = 2000;
 
+/** Hides the button on screens with hover until the surrounding `group` is hovered or holds focus. */
+const REVEAL_ON_HOVER =
+  'can-hover:translate-y-2 can-hover:opacity-0 can-hover:group-hover:translate-y-0 can-hover:group-hover:opacity-100 can-hover:group-focus-within:translate-y-0 can-hover:group-focus-within:opacity-100';
+
 interface AddToCartButtonProps {
   product: ProductCard;
   /** The id of the element holding the product's name, so the button says which product it adds. */
   describedBy: string;
-  /** Positions the button, e.g. on a product card's photo. */
+  /** Positions the button and its "Added to cart" confirmation, e.g. on a product card's photo. */
   className?: string;
 }
 
@@ -35,16 +39,15 @@ export function AddToCartButton({ product, describedBy, className = '' }: AddToC
   }, [addedCount]);
 
   return (
-    <div
-      className={`flex items-center gap-2 transition duration-300 ${revealOnHover ? 'can-hover:translate-y-2 can-hover:opacity-0 can-hover:group-hover:translate-y-0 can-hover:group-hover:opacity-100 can-hover:group-focus-within:translate-y-0 can-hover:group-focus-within:opacity-100' : ''} ${className}`}
-    >
+    // z-10 lifts the whole group above the card's stretched product link: the reveal's transform makes this wrapper
+    // its own stacking context, so a z-index on the button alone wouldn't reach past it.
+    <div className={`z-10 flex items-center gap-2 transition duration-300 ${revealOnHover ? REVEAL_ON_HOVER : ''} ${className}`}>
       <p
         role="status"
         className={confirming ? 'rounded-full bg-paper px-3 py-1.5 text-[11px] font-semibold text-ink shadow-soft' : 'sr-only'}
       >
         {confirming && 'Added to cart'}
       </p>
-      {/* z-10 lifts the button above the card's stretched product link. */}
       <button
         type="button"
         disabled={alreadyInCart}
@@ -54,7 +57,7 @@ export function AddToCartButton({ product, describedBy, className = '' }: AddToC
           add(product);
           setAddedCount((count) => count + 1);
         }}
-        className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full bg-ink text-paper shadow-soft transition hover:scale-110 hover:bg-ink/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber disabled:bg-paper disabled:text-ink"
+        className="flex h-11 w-11 items-center justify-center rounded-full bg-ink text-paper shadow-soft transition enabled:hover:scale-110 enabled:hover:bg-ink/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber disabled:bg-paper disabled:text-ink"
       >
         {alreadyInCart ? <CheckIcon /> : <PlusIcon />}
       </button>
