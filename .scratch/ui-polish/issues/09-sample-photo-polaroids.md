@@ -23,9 +23,21 @@ See spec (Sample Photos, Loading and errors).
 
 **Status:** ready-for-agent
 
-- [ ] Each polaroid shows its photo (alt text intact) and Film Roll name, and links to the Film Roll
-- [ ] Previous and next buttons scroll the row
-- [ ] Loading and error states are scoped to the Sample Photo band
-- [ ] Reduced motion: no drop or tilt animation
-- [ ] The masonry grid and its skeleton pattern are removed
-- [ ] Sample Photo tests are updated
+- [x] Each polaroid shows its photo (alt text intact) and Film Roll name, and links to the Film Roll
+- [x] Previous and next buttons scroll the row
+- [x] Loading and error states are scoped to the Sample Photo band
+- [x] Reduced motion: no drop or tilt animation
+- [x] The masonry grid and its skeleton pattern are removed
+- [x] Sample Photo tests are updated
+
+## Comments
+
+**2026-10-15, review:** All criteria verified on `feat/ui-polish` (320ecbd); web suite 79/79 green, typecheck clean.
+- `homepage/SamplePhotos.tsx`: an ink full-bleed band headed "Shot on our film", kicker "Real photos · Shot on film". Each polaroid shows its photo with its alt text intact and the Film Roll name in serif italic, and links to that Film Roll (HomePage tests).
+- "Previous photos" and "Next photos" (shown from md up) scroll the row by 0.8 of its width, smoothly unless reduced motion (HomePage test with a stand-in `scrollBy`). The row snaps, and its scroll padding matches the frame so the first polaroid lines up with the heading.
+- Drop-in: through the shared `Reveal` (0.08s stagger), a spring to alternating tilts within ±3°. Hover straightens, lifts and grows. Reduced motion: the polaroids are shown at their tilt with no drop and no hover motion.
+- Loading and errors are scoped to the band, which owns the homepage data: blank polaroids under a "Loading photos" status, or "Couldn’t load the photos" with "Try again" that stays up during the retry. The hero and Spotlights render meanwhile (HomePage tests).
+- The masonry `SamplePhotoGrid` and `HomePageSkeleton` are removed.
+- Scroll target: `id="sample-photos"` (with `scroll-mt-24`) now sits on the always-present band rather than the heading (now `sample-photos-title`), so "See sample photos" works while loading and after errors too.
+- Checked in headless Edge at 1440px against a fake API: loaded and error states. The espresso AI band is clearly distinct from the ink band below.
+- Known, left for later: with no Sample Photos at all the band, and so the hero button's target, leaves the page. The scrollbar is hidden with `scrollbar-width: none` only.
