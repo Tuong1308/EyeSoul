@@ -16,3 +16,5 @@ Spec: `.scratch/homepage/spec.md`
 - [ ] An empty Cart shows a message nudging back to shopping
 - [ ] "Thanh toán" leads to a placeholder checkout route
 - [ ] Web tests cover adding, the header count, the Film Camera cap, no add on Out of Stock, mini-cart contents and subtotal, and persistence across a remount
+
+**Note from 02:** the card's name link is stretched over the whole card (`after:absolute after:inset-0`), so the "Thêm vào giỏ" button needs `relative z-10` to stay clickable above it.

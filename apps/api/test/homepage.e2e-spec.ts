@@ -37,6 +37,15 @@ describe('GET /homepage', () => {
     ]);
   });
 
+  it('omits a Product Type with no eligible products instead of returning an empty row', async () => {
+    await createProduct({ productType: 'DIGITAL_CAMERA', name: 'Fujifilm X100VI' });
+    await createProduct({ productType: 'FILM_CAMERA', name: 'Leica M6', soldAt: new Date('2026-02-01T00:00:00Z') });
+
+    const { rows } = await getHomepage();
+
+    expect(rows.map((r) => r.productType)).toEqual(['DIGITAL_CAMERA']);
+  });
+
   function rowNames(rows: HomepageResponse['rows'], productType: ProductType) {
     return rows.find((r) => r.productType === productType)?.products.map((p) => p.name);
   }
@@ -111,6 +120,8 @@ describe('GET /homepage', () => {
         name: 'No photo yet',
         priceVnd: 1_000_000,
         photo: null,
+        conditionGrade: null,
+        availability: 'available',
       },
       {
         id: product.id,
@@ -119,7 +130,43 @@ describe('GET /homepage', () => {
         name: 'Sony A7 IV',
         priceVnd: 52_990_000,
         photo: { url: 'https://img.test/front.jpg', alt: 'Mặt trước' },
+        conditionGrade: null,
+        availability: 'available',
       },
+    ]);
+  });
+
+  it('keeps Out of Stock Digital Cameras and Film Rolls, marked out_of_stock', async () => {
+    await createProduct({ productType: 'DIGITAL_CAMERA', name: 'In stock camera', stock: 2 });
+    await createProduct({ productType: 'DIGITAL_CAMERA', name: 'Empty camera', stock: 0 });
+    await createProduct({ productType: 'FILM_CAMERA', name: 'Unsold film camera', stock: 0 });
+    await createProduct({ productType: 'FILM_ROLL', name: 'Empty roll', stock: 0 });
+
+    const { rows } = await getHomepage();
+
+    const availability = rows.flatMap((r) => r.products.map((p) => [p.name, p.availability]));
+    expect(availability).toEqual([
+      ['Empty camera', 'out_of_stock'],
+      ['In stock camera', 'available'],
+      ['Unsold film camera', 'available'],
+      ['Empty roll', 'out_of_stock'],
+    ]);
+  });
+
+  it('gives Film Camera cards their Condition Grade and every other card none', async () => {
+    await createProduct({ productType: 'FILM_CAMERA', name: 'Grade A+', conditionGrade: 'A_PLUS' });
+    await createProduct({ productType: 'FILM_CAMERA', name: 'Grade C', conditionGrade: 'C' });
+    await createProduct({ productType: 'DIGITAL_CAMERA', name: 'Digital' });
+    await createProduct({ productType: 'FILM_ROLL', name: 'Roll' });
+
+    const { rows } = await getHomepage();
+
+    const grades = rows.flatMap((r) => r.products.map((p) => [p.name, p.conditionGrade]));
+    expect(grades).toEqual([
+      ['Digital', null],
+      ['Grade C', 'C'],
+      ['Grade A+', 'A+'],
+      ['Roll', null],
     ]);
   });
 

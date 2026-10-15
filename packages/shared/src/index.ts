@@ -2,6 +2,11 @@
 
 export type ProductType = 'DIGITAL_CAMERA' | 'FILM_CAMERA' | 'FILM_ROLL';
 
+/** Sold Film Cameras never reach a ProductCard, so there is no `sold` value. */
+export type Availability = 'available' | 'out_of_stock';
+
+export type ConditionGrade = 'A+' | 'A' | 'B' | 'C';
+
 export interface ProductCard {
   id: string;
   slug: string;
@@ -9,6 +14,9 @@ export interface ProductCard {
   name: string;
   priceVnd: number;
   photo: { url: string; alt: string } | null;
+  /** Film Cameras only; null for every other Product Type. */
+  conditionGrade: ConditionGrade | null;
+  availability: Availability;
 }
 
 export interface HomepageRow {
