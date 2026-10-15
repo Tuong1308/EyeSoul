@@ -6,30 +6,33 @@ import { ConditionGradeBadge } from '../components/ConditionGradeBadge';
 import { formatVnd } from '../lib/format-vnd';
 import { productPath } from '../lib/routes';
 
+/** A chrome-free card: the product's first Product Photo, with name and price on one line beneath. */
 export function ProductCardView({ product }: { product: ProductCard }) {
   const nameId = useId();
   return (
-    <article aria-labelledby={nameId} className="relative flex h-full flex-col rounded-xl2 bg-card p-3 shadow-soft">
-      <div className="grain relative aspect-square overflow-hidden rounded-xl bg-line">
+    <article aria-labelledby={nameId} className="group relative">
+      <div className="grain aspect-[4/5] rounded-xl2 bg-line">
         {product.photo && (
           <img src={product.photo.url} alt={product.photo.alt} loading="lazy" className="h-full w-full object-cover" />
         )}
-        {product.conditionGrade && <ConditionGradeBadge grade={product.conditionGrade} className="absolute right-2 top-2" />}
+        {product.conditionGrade && <ConditionGradeBadge grade={product.conditionGrade} className="absolute left-3 top-3" />}
+        {product.availability === 'out_of_stock' ? (
+          <p className="absolute bottom-3 left-3 rounded-full bg-paper px-3 py-1 text-[11px] font-semibold uppercase tracking-[.2em]">
+            Out of stock
+          </p>
+        ) : (
+          <AddToCartButton product={product} describedBy={nameId} className="absolute bottom-3 right-3" />
+        )}
       </div>
-      <h3 id={nameId} className="mt-3 text-sm font-medium leading-snug">
-        {/* Stretched over the whole card, so clicking anywhere on it opens the product. */}
-        <Link to={productPath(product.slug)} className="after:absolute after:inset-0 after:rounded-xl2 after:content-['']">
-          {product.name}
-        </Link>
-      </h3>
-      <p className="mt-1 font-serif text-lg font-bold">{formatVnd(product.priceVnd)}</p>
-      {product.availability === 'out_of_stock' ? (
-        <p className="mt-1 text-[11px] font-semibold uppercase tracking-[.2em] text-ink/60">Out of stock</p>
-      ) : (
-        <div className="mt-auto">
-          <AddToCartButton product={product} describedBy={nameId} />
-        </div>
-      )}
+      <div className="mt-3 flex items-baseline justify-between gap-3">
+        <h3 id={nameId} className="text-sm font-medium leading-snug">
+          {/* Stretched over the whole card, so clicking anywhere on it opens the product. */}
+          <Link to={productPath(product.slug)} className="after:absolute after:inset-0 after:content-['']">
+            {product.name}
+          </Link>
+        </h3>
+        <p className="shrink-0 font-serif text-lg font-bold">{formatVnd(product.priceVnd)}</p>
+      </div>
     </article>
   );
 }

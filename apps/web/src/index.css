@@ -18,6 +18,9 @@
   --shadow-soft: 0 10px 40px -12px rgba(60, 40, 10, 0.18);
 }
 
+/* Screens with a real hover (mouse, trackpad); touch screens skip hover-only reveals. */
+@custom-variant can-hover (@media (hover: hover));
+
 @layer base {
   body {
     @apply bg-paper font-sans text-ink antialiased;
