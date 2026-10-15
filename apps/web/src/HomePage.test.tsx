@@ -5,6 +5,22 @@ import { renderApp } from './test/render-app';
 describe('Homepage', () => {
   beforeEach(serveHomepage);
 
+  it.each([
+    ['Máy ảnh digital', '/may-anh-digital'],
+    ['Máy ảnh film', '/may-anh-film'],
+    ['Cuộn film', '/cuon-film'],
+  ])('leads from the hero\'s "%s" button to its Product Type listing', async (label, path) => {
+    renderApp('/');
+
+    const hero = screen.getByRole('region', { name: 'Giới thiệu Eye Soul' });
+    const cta = within(hero).getByRole('link', { name: label });
+    expect(cta).toHaveAttribute('href', path);
+    fireEvent.click(cta);
+
+    expect(await screen.findByRole('heading', { name: label })).toBeInTheDocument();
+    expect(screen.queryByRole('region')).not.toBeInTheDocument();
+  });
+
   it('shows a Featured Products row per Product Type with photos, names and VND prices', async () => {
     renderApp('/');
 
@@ -12,9 +28,10 @@ describe('Homepage', () => {
     const film = screen.getByRole('region', { name: 'Máy ảnh film' });
     const rolls = screen.getByRole('region', { name: 'Cuộn film' });
     const samples = screen.getByRole('region', { name: 'Ảnh mẫu từ film' });
+    const hero = screen.getByRole('region', { name: 'Giới thiệu Eye Soul' });
 
     const regions = screen.getAllByRole('region');
-    expect(regions).toEqual([digital, film, rolls, samples]);
+    expect(regions).toEqual([hero, digital, film, rolls, samples]);
 
     expect(within(digital).getByText('Fujifilm X100VI')).toBeInTheDocument();
     expect(within(digital).getByText('45.990.000 ₫')).toBeInTheDocument();

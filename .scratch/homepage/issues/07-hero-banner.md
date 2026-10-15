@@ -6,10 +6,10 @@ Spec: `.scratch/homepage/spec.md`
 
 **Blocked by:** 02
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Hero content (image, tagline, three CTAs) is hard-coded in the web app, with no admin or API involvement
-- [ ] The Ken Burns zoom and tagline fade-in are built with Motion
-- [ ] With `prefers-reduced-motion`, the animation is disabled or minimal
-- [ ] The three CTAs ("Máy ảnh digital", "Máy ảnh film", "Cuộn film") lead to the placeholder Product Type listing routes
-- [ ] Web tests cover the three CTAs and their destinations
+- [x] Hero content (image, tagline, three CTAs) is hard-coded in the web app, with no admin or API involvement
+- [x] The Ken Burns zoom and tagline fade-in are built with Motion
+- [x] With `prefers-reduced-motion`, the animation is disabled or minimal
+- [x] The three CTAs ("Máy ảnh digital", "Máy ảnh film", "Cuộn film") lead to the placeholder Product Type listing routes
+- [x] Web tests cover the three CTAs and their destinations
