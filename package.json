@@ -1,0 +1,14 @@
+{
+  "name": "eyesoul",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "db:up": "docker compose up -d --wait postgres",
+    "db:down": "docker compose down",
+    "db:setup": "pnpm --filter @eyesoul/api db:setup",
+    "dev:api": "pnpm --filter @eyesoul/api dev",
+    "dev:web": "pnpm --filter @eyesoul/web dev",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test"
+  }
+}

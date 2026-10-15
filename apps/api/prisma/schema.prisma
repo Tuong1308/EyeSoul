@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProductType {
+  DIGITAL_CAMERA
+  FILM_CAMERA
+  FILM_ROLL
+}
+
+enum ConditionGrade {
+  A_PLUS @map("A+")
+  A
+  B
+  C
+}
+
+// One product per sellable configuration; there are no variant tables (ADR-0003).
+model Product {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  productType ProductType
+  name        String
+  priceVnd    Int
+  description String
+  createdAt   DateTime    @default(now())
+
+  // Digital Cameras and Film Rolls only; zero means Out of Stock.
+  stock  Int       @default(0)
+  // Film Cameras only; set once the unit is Sold.
+  soldAt DateTime?
+
+  // Required for Film Cameras, null otherwise.
+  conditionGrade ConditionGrade?
+  conditionNote  String?
+
+  featured     Boolean @default(false)
+  featuredRank Int?
+
+  photos       ProductPhoto[]
+  samplePhotos SamplePhoto[]
+
+  @@index([productType, featured, featuredRank])
+  @@index([productType, createdAt])
+}
+
+// A photo *of* a product. The lowest position is the card image.
+model ProductPhoto {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String
+  position  Int
+
+  @@unique([productId, position])
+}
+
+// A photo taken *with* a product.
+model SamplePhoto {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String
+  createdAt DateTime @default(now())
+
+  @@index([productId, createdAt])
+}
