@@ -10,8 +10,8 @@ export function HomePage() {
   const failed = isError && !data;
   return (
     <main className="pb-24">
+      <Hero />
       <div className="frame">
-        <Hero />
         {isPending && <HomePageSkeleton />}
         {failed && <LoadError subject="photos" retrying={isFetching} onRetry={() => void refetch()} />}
       </div>

@@ -7,20 +7,40 @@ import { server } from './test/server';
 describe('Homepage', () => {
   beforeEach(serveHomepage);
 
-  it.each([
-    ['Digital cameras', '/products?type=digital-camera'],
-    ['Film cameras', '/products?type=film-camera'],
-    ['Film rolls', '/products?type=film-roll'],
-  ])('leads from the hero\'s "%s" button to the Products page filtered to that Product Type', async (label, path) => {
+  it('leads from the hero\'s "Shop film cameras" button to the Products page filtered to Film cameras', async () => {
     renderApp('/');
 
     const hero = screen.getByRole('region', { name: 'About Eye Soul' });
-    const cta = within(hero).getByRole('link', { name: label });
-    expect(cta).toHaveAttribute('href', path);
-    fireEvent.click(cta);
+    expect(within(hero).getByRole('heading', { level: 1, name: 'Slow down, look closer.' })).toBeInTheDocument();
+    const shop = within(hero).getByRole('link', { name: 'Shop film cameras' });
+    expect(shop).toHaveAttribute('href', '/products?type=film-camera');
+    fireEvent.click(shop);
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Our products' })).toBeInTheDocument();
-    expect(await screen.findAllByRole('region')).toEqual([screen.getByRole('region', { name: label })]);
+    expect(await screen.findAllByRole('region')).toEqual([screen.getByRole('region', { name: 'Film cameras' })]);
+  });
+
+  it('points the hero\'s "See sample photos" button at the Sample Photo section', async () => {
+    renderApp('/');
+
+    const hero = screen.getByRole('region', { name: 'About Eye Soul' });
+    const see = within(hero).getByRole('link', { name: 'See sample photos' });
+    expect(see).toHaveAttribute('href', '#sample-photos');
+
+    const samples = await screen.findByRole('region', { name: 'Shot on our film' });
+    expect(within(samples).getByRole('heading', { name: 'Shot on our film' })).toHaveAttribute('id', 'sample-photos');
+  });
+
+  it('keeps the hero film strip and photos out of the way of assistive tech: the two buttons are all it offers', () => {
+    renderApp('/');
+
+    const hero = screen.getByRole('region', { name: 'About Eye Soul' });
+    expect(within(hero).getAllByRole('link').map((link) => link.textContent)).toEqual([
+      'Shop film cameras',
+      'See sample photos',
+    ]);
+    expect(within(hero).queryAllByRole('img')).toEqual([]);
+    expect(within(hero).getByRole('list', { name: 'Our commitments' })).toHaveTextContent('Film cameras graded A+ to C');
   });
 
   it('leaves the Featured Product rows to the Products page', async () => {
