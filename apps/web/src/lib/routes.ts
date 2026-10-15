@@ -12,3 +12,7 @@ export const productPath = (slug: string) => `/san-pham/${slug}`;
 export const CHECKOUT_PATH = '/thanh-toan';
 
 export const LOGIN_PATH = '/dang-nhap';
+
+export const SEARCH_PATH = '/tim-kiem';
+
+export const searchPath = (query: string) => `${SEARCH_PATH}?q=${encodeURIComponent(query)}`;

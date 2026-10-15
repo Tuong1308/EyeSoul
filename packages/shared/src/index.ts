@@ -27,3 +27,8 @@ export interface HomepageRow {
 export interface HomepageResponse {
   rows: HomepageRow[];
 }
+
+export interface SearchSuggestionsResponse {
+  /** At most 8 products whose name matches the query; never a Sold Film Camera. */
+  products: ProductCard[];
+}

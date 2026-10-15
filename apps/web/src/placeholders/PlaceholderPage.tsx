@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Link, useParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
 import { StubSessionPanel } from '../session/StubSessionPanel';
 
 /** Stands in for a page that a later feature will build. */
@@ -27,4 +27,13 @@ export function ProductPlaceholderPage() {
 
 export function LoginPlaceholderPage() {
   return <PlaceholderPage title="Đăng nhập">{import.meta.env.DEV && <StubSessionPanel />}</PlaceholderPage>;
+}
+
+export function SearchResultsPlaceholderPage() {
+  const [params] = useSearchParams();
+  return (
+    <PlaceholderPage title="Kết quả tìm kiếm">
+      <p className="mt-4 font-serif text-xl italic">“{params.get('q') ?? ''}”</p>
+    </PlaceholderPage>
+  );
 }

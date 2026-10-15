@@ -1,4 +1,4 @@
-import type { HomepageResponse } from '@eyesoul/shared';
+import type { HomepageResponse, SearchSuggestionsResponse } from '@eyesoul/shared';
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -11,4 +11,5 @@ async function get<T>(path: string): Promise<T> {
 /** The single typed client for the Eye Soul API. */
 export const api = {
   homepage: () => get<HomepageResponse>('/homepage'),
+  searchSuggestions: (q: string) => get<SearchSuggestionsResponse>(`/search/suggestions?q=${encodeURIComponent(q)}`),
 };

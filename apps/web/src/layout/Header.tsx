@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router';
 import { useCart } from '../cart/cart-context';
 import { MiniCart } from '../cart/MiniCart';
 import { PRODUCT_TYPES } from '../lib/routes';
+import { SearchBox } from '../search/SearchBox';
 import { AccountControl } from './AccountControl';
 
 export function Header() {
@@ -29,34 +30,34 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-30 border-b border-line bg-paper">
-        <div className="relative mx-auto flex max-w-6xl items-center gap-2 px-4 py-3 md:gap-10 md:px-8">
+        <div className="relative mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-3 md:flex-nowrap md:gap-6 md:px-8">
           <button
             type="button"
             aria-label="Danh mục"
             aria-expanded={menuOpen}
             aria-controls={navId}
             onClick={() => setMenuOpen((open) => !open)}
-            className="-ml-2 flex h-11 w-11 items-center justify-center rounded-full hover:bg-line/60 md:hidden"
+            className="-ml-2 flex h-11 w-11 items-center justify-center rounded-full hover:bg-line/60 lg:hidden"
           >
             <MenuIcon open={menuOpen} />
           </button>
           <Link to="/" aria-label="Eye Soul, về trang chủ" className="font-serif text-2xl font-bold">
             Eye <em className="font-medium">Soul</em>
           </Link>
-          {/* One nav for both layouts: inline from md up, a drop-down panel below the bar on phones. */}
+          {/* One nav for both layouts: inline from lg up, a drop-down panel below the bar on phones and tablets. */}
           <nav
             id={navId}
             aria-label="Danh mục sản phẩm"
-            className={`${menuOpen ? 'block' : 'hidden'} absolute inset-x-0 top-full border-b border-line bg-paper shadow-soft md:static md:block md:border-0 md:bg-transparent md:shadow-none`}
+            className={`${menuOpen ? 'block' : 'hidden'} absolute inset-x-0 top-full border-b border-line bg-paper shadow-soft lg:static lg:block lg:border-0 lg:bg-transparent lg:shadow-none`}
           >
-            <ul className="flex flex-col px-4 py-2 md:flex-row md:gap-8 md:p-0">
+            <ul className="flex flex-col px-4 py-2 lg:flex-row lg:gap-8 lg:p-0">
               {Object.values(PRODUCT_TYPES).map(({ label, path }) => (
                 <li key={path}>
                   <NavLink
                     to={path}
                     onClick={() => setMenuOpen(false)}
                     className={({ isActive }) =>
-                      `block py-3 text-sm font-medium underline-offset-8 hover:underline md:py-1 ${isActive ? 'underline decoration-amber decoration-2' : ''}`
+                      `block py-3 text-sm font-medium underline-offset-8 hover:underline lg:py-1 ${isActive ? 'underline decoration-amber decoration-2' : ''}`
                     }
                   >
                     {label}
@@ -65,6 +66,10 @@ export function Header() {
               ))}
             </ul>
           </nav>
+          {/* A full-width second row on phones; inline from md up. Starting a search closes the menu. */}
+          <div onFocus={() => setMenuOpen(false)} className="order-last basis-full md:order-none md:min-w-0 md:flex-1 md:basis-auto lg:max-w-xs">
+            <SearchBox />
+          </div>
           <div className="ml-auto flex items-center gap-1">
             <AccountControl />
             <button
