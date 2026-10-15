@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion, type Variants } from 'motion/react';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Link } from 'react-router';
+import { bandTone } from '../components/band-tone';
 import { Reveal, REVEAL_EASE, rise } from '../components/Reveal';
 import { ASSISTANT_PATH, PORTFOLIO_PATH, PRODUCTS_PATH } from '../lib/routes';
 import { PRODUCT_TYPE_PHOTOS } from '../lib/product-type-photos';
@@ -30,7 +31,8 @@ interface Spotlight {
   cta: { label: string; to: string };
   /** Background and text colours of the band. */
   tone: string;
-  dark: boolean;
+  /** Whether the band is dark, so its copy and button turn light. */
+  onDark: boolean;
   /** Extra copy under the body, e.g. the rotating quotes. */
   extra?: ReactNode;
   visual: ReactNode;
@@ -48,7 +50,7 @@ const SPOTLIGHTS: Spotlight[] = [
     body: 'New digital bodies, used film cameras graded A+ to C with every flaw written down, and fresh film rolls in 35mm and 120.',
     cta: { label: 'Browse products', to: PRODUCTS_PATH },
     tone: 'bg-paper text-ink',
-    dark: false,
+    onDark: false,
     extra: <RotatingQuote />,
     visual: <ShopVisual />,
   },
@@ -63,7 +65,7 @@ const SPOTLIGHTS: Spotlight[] = [
     body: 'Upload your scans, tag the camera and film you used, and turn your frames into a portfolio others can follow.',
     cta: { label: 'Start your portfolio', to: PORTFOLIO_PATH },
     tone: 'bg-beige text-ink',
-    dark: false,
+    onDark: false,
     visual: <PortfolioVisual />,
   },
   {
@@ -77,7 +79,7 @@ const SPOTLIGHTS: Spotlight[] = [
     body: 'Our AI assistant helps you pick the camera and film for how you shoot, and walks you through metering, exposure and the rest.',
     cta: { label: 'Ask the assistant', to: ASSISTANT_PATH },
     tone: 'bg-espresso text-paper',
-    dark: true,
+    onDark: true,
     visual: <AssistantVisual />,
   },
 ];
@@ -100,7 +102,8 @@ export function Spotlights() {
 }
 
 function SpotlightCopy({ spotlight }: { spotlight: Spotlight }) {
-  const { kicker, title, body, cta, dark, extra } = spotlight;
+  const { kicker, title, body, cta, onDark, extra } = spotlight;
+  const tone = bandTone(onDark);
   return (
     <>
       <motion.p variants={LINE} className="text-[11px] font-semibold uppercase tracking-[.25em] text-amber">
@@ -109,7 +112,7 @@ function SpotlightCopy({ spotlight }: { spotlight: Spotlight }) {
       <motion.h2 variants={LINE} className="mt-4 font-serif text-4xl leading-none md:text-6xl">
         {title}
       </motion.h2>
-      <motion.p variants={LINE} className={`mt-5 max-w-md text-base md:text-lg ${dark ? 'text-paper/75' : 'text-ink/75'}`}>
+      <motion.p variants={LINE} className={`mt-5 max-w-md text-base md:text-lg ${tone.muted}`}>
         {body}
       </motion.p>
       {extra && (
@@ -120,7 +123,7 @@ function SpotlightCopy({ spotlight }: { spotlight: Spotlight }) {
       <motion.div variants={LINE} className="mt-8">
         <Link
           to={cta.to}
-          className={`inline-block rounded-full px-6 py-3 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber ${dark ? 'bg-paper text-ink hover:bg-amber' : 'bg-ink text-paper hover:bg-ink/85'}`}
+          className={`inline-block rounded-full px-6 py-3 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber ${tone.button}`}
         >
           {cta.label}
         </Link>

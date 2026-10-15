@@ -16,6 +16,10 @@
 
   --radius-xl2: 16px;
   --shadow-soft: 0 10px 40px -12px rgba(60, 40, 10, 0.18);
+
+  /* Sample Photo polaroids: a warm white print with a deep shadow on the ink band. */
+  --color-polaroid: #fdfcf8;
+  --shadow-print: 0 18px 40px -12px rgba(0, 0, 0, 0.6);
 }
 
 /* Screens with a real hover (mouse, trackpad); touch screens skip hover-only reveals. */

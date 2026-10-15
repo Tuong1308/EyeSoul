@@ -95,7 +95,7 @@ function Polaroid({ photo, tilt }: { photo: HomepageSamplePhoto; tilt: number })
     >
       <Link
         to={productPath(photo.filmRoll.slug)}
-        className="block bg-[#fdfcf8] p-2.5 pb-3 shadow-[0_18px_40px_-12px_rgba(0,0,0,.6)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber md:p-3"
+        className="block bg-polaroid p-2.5 pb-3 shadow-print focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber md:p-3"
       >
         <div className="grain aspect-square bg-line">
           <img src={photo.url} alt={photo.alt} loading="lazy" className="h-full w-full object-cover" />

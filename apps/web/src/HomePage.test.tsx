@@ -1,7 +1,6 @@
 import type { HomepageResponse } from '@eyesoul/shared';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
-import { onTestFinished } from 'vitest';
 import { homepage, serveHomepage } from './test/homepage-fixture';
 import { renderApp } from './test/render-app';
 import { server } from './test/server';

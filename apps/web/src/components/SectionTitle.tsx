@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { bandTone } from './band-tone';
 
 interface SectionTitleProps {
   id: string;
@@ -16,7 +17,7 @@ interface SectionTitleProps {
 export function SectionTitle({ id, kicker, lead, emphasis, action, onDark = false }: SectionTitleProps) {
   return (
     // A div rather than <header>: inside a section it would add nothing, and outside one it would be a second banner.
-    <div className={`flex items-end justify-between gap-4 border-t pt-6 ${onDark ? 'border-paper/30' : 'border-ink'}`}>
+    <div className={`flex items-end justify-between gap-4 border-t pt-6 ${bandTone(onDark).rule}`}>
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-[.2em] text-amber">{kicker}</p>
         <h2 id={id} className="mt-2 font-serif text-4xl leading-[.95] md:text-6xl">
