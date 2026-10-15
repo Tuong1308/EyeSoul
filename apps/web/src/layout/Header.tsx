@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { useCart } from '../cart/cart-context';
 import { MiniCart } from '../cart/MiniCart';
 import { LogoHorizontal } from '../components/Logo';
@@ -104,6 +104,8 @@ export function Header() {
  */
 function useScrolledPastHero() {
   const [past, setPast] = useState(false);
+  // A client-side navigation can swap the hero in or out without a scroll event, so re-measure on each one.
+  const { pathname } = useLocation();
   useEffect(() => {
     const update = () => {
       const hero = document.querySelector('[data-hero]');
@@ -112,8 +114,12 @@ function useScrolledPastHero() {
     };
     update();
     window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
-  }, []);
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [pathname]);
   return past;
 }
 

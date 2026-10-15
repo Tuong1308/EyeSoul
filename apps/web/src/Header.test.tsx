@@ -46,6 +46,14 @@ describe('Header navigation', () => {
     expect(await screen.findByRole('heading', { level: 1, name: 'Products' })).toBeInTheDocument();
   });
 
+  it('marks the chosen Product Type as the current page, and Products as its current section', async () => {
+    renderApp('/products?type=film-camera');
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Products' })).toBeInTheDocument();
+    expect(within(mainNav()).getByRole('link', { name: 'Film cameras' })).toHaveAttribute('aria-current', 'page');
+    expect(within(mainNav()).getByRole('link', { name: 'Products' })).toHaveAttribute('aria-current', 'true');
+  });
+
   it('keeps the drop-down open while keyboard focus moves from "Products" into it', () => {
     renderApp('/');
 
@@ -56,7 +64,11 @@ describe('Header navigation', () => {
     expect(products).toHaveAttribute('aria-expanded', 'true');
     const filmRolls = within(mainNav()).getByRole('link', { name: 'Film rolls' });
     fireEvent.blur(products, { relatedTarget: filmRolls });
-    fireEvent.focus(filmRolls);
+    filmRolls.focus();
+    expect(products).toHaveAttribute('aria-expanded', 'true');
+
+    // The pointer wandering off doesn't snatch the drop-down away from keyboard focus.
+    fireEvent.mouseLeave(products.closest('li')!);
     expect(products).toHaveAttribute('aria-expanded', 'true');
 
     fireEvent.keyDown(filmRolls, { key: 'Escape' });
