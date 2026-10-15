@@ -1,15 +1,7 @@
-import type { ProductType } from '@eyesoul/shared';
 import { useEffect, useId, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import { PRODUCT_TYPE_ENTRIES, PRODUCTS_PATH, productTypeFromParam } from '../lib/routes';
-
-const WIKIMEDIA = 'https://thumb.wikimedia.org/wikipedia/commons/thumb';
-// One representative Product Photo per Product Type, taken from the seed photo map (licences recorded there).
-const TILE_PHOTOS: Record<ProductType, string> = {
-  DIGITAL_CAMERA: `${WIKIMEDIA}/d/db/Fujifilm_X100VI_25_may_2024b.jpg/960px-Fujifilm_X100VI_25_may_2024b.jpg`,
-  FILM_CAMERA: `${WIKIMEDIA}/c/c0/Canon_AE-1_Program_2.jpg/960px-Canon_AE-1_Program_2.jpg`,
-  FILM_ROLL: `${WIKIMEDIA}/c/c0/Kodak_analog_film_reel_Portra_400_%2827940330389%29.jpg/960px-Kodak_analog_film_reel_Portra_400_%2827940330389%29.jpg`,
-};
+import { PRODUCT_TYPE_PHOTOS } from '../lib/showcase-photos';
 
 /**
  * The header's "Products" entry. From lg up, hovering it or moving keyboard focus into it drops down a tile per
@@ -81,7 +73,7 @@ export function ProductsMenu({ onNavigate }: { onNavigate: () => void }) {
               >
                 <span className="hidden aspect-[4/3] overflow-hidden rounded-lg bg-line lg:block">
                   <img
-                    src={TILE_PHOTOS[type]}
+                    src={PRODUCT_TYPE_PHOTOS[type]}
                     alt=""
                     loading="lazy"
                     className="h-full w-full object-cover transition duration-500 group-hover/tile:scale-105"

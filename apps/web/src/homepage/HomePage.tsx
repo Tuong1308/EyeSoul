@@ -2,6 +2,7 @@ import { LoadError } from '../components/LoadError';
 import { Hero } from './Hero';
 import { HomePageSkeleton } from './HomePageSkeleton';
 import { SamplePhotoGrid } from './SamplePhotoGrid';
+import { Spotlights } from './Spotlights';
 import { useHomepage } from './use-homepage';
 
 export function HomePage() {
@@ -11,6 +12,7 @@ export function HomePage() {
   return (
     <main className="pb-24">
       <Hero />
+      <Spotlights />
       {/* The hero's "See sample photos" target: always on the page, so the button works while the photos load too. */}
       <div id="sample-photos" className="scroll-mt-24">
         {(isPending || failed) && (

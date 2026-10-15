@@ -50,14 +50,48 @@ describe('Homepage', () => {
     expect(within(hero).getByRole('list', { name: 'Our commitments' })).toHaveTextContent('Film cameras graded A+ to C');
   });
 
-  it('leaves the Featured Product rows to the Products page', async () => {
+  it('runs hero, the three Spotlights, then the Sample Photos, leaving the Featured Product rows to the Products page', async () => {
     renderApp('/');
 
     const samples = await screen.findByRole('region', { name: 'Shot on our film' });
-    const hero = screen.getByRole('region', { name: 'About Eye Soul' });
-
-    expect(screen.getAllByRole('region')).toEqual([hero, samples]);
+    expect(screen.getAllByRole('region')).toEqual([
+      screen.getByRole('region', { name: 'About Eye Soul' }),
+      screen.getByRole('region', { name: 'The shop' }),
+      screen.getByRole('region', { name: 'Your portfolio' }),
+      screen.getByRole('region', { name: 'AI assistant' }),
+      samples,
+    ]);
     expect(screen.queryByText('Fujifilm X100VI')).not.toBeInTheDocument();
+  });
+
+  it('shows the Spotlights straight away, without waiting on the homepage data', () => {
+    server.use(http.get('http://api.test/homepage', () => new Promise<never>(() => {})));
+    renderApp('/');
+
+    expect(screen.getByRole('region', { name: 'The shop' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'AI assistant' })).toBeInTheDocument();
+  });
+
+  it('quotes a photographer in the shop Spotlight', () => {
+    renderApp('/');
+
+    const shop = screen.getByRole('region', { name: 'The shop' });
+    expect(within(shop).getByText('— Ansel Adams')).toBeInTheDocument();
+    expect(within(shop).getByText('“You don’t take a photograph, you make it.”')).toBeInTheDocument();
+  });
+
+  it.each([
+    ['The shop', 'Browse products', '/products', 'Our products'],
+    ['Your portfolio', 'Start your portfolio', '/portfolio', 'Portfolio'],
+    ['AI assistant', 'Ask the assistant', '/assistant', 'AI assistant'],
+  ])('leads from the "%s" Spotlight\'s "%s" button to %s', async (spotlight, cta, path, heading) => {
+    renderApp('/');
+
+    const link = within(screen.getByRole('region', { name: spotlight })).getByRole('link', { name: cta });
+    expect(link).toHaveAttribute('href', path);
+    fireEvent.click(link);
+
+    expect(await screen.findByRole('heading', { level: 1, name: heading })).toBeInTheDocument();
   });
 
   it('shows each Sample Photo labelled with the Film Roll it was shot on', async () => {
