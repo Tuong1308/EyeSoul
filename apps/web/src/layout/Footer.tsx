@@ -21,12 +21,12 @@ export function Footer() {
           <address className="mt-4 space-y-1 text-sm not-italic">
             <p>123 Nguyen Hue, District 1, Ho Chi Minh City</p>
             <p>
-              <a href="tel:+84909123456" className="hover:underline">
+              <a href="tel:+84909123456" className="link-slide">
                 0909 123 456
               </a>
             </p>
             <p>
-              <a href="mailto:hello@eyesoul.vn" className="hover:underline">
+              <a href="mailto:hello@eyesoul.vn" className="link-slide">
                 hello@eyesoul.vn
               </a>
             </p>
@@ -36,12 +36,12 @@ export function Footer() {
           <FooterHeading>Policies</FooterHeading>
           <ul className="mt-3 space-y-2 text-sm">
             <li>
-              <Link to={SHIPPING_POLICY_PATH} className="hover:underline">
+              <Link to={SHIPPING_POLICY_PATH} className="link-slide">
                 Shipping policy
               </Link>
             </li>
             <li>
-              <Link to={RETURN_POLICY_PATH} className="hover:underline">
+              <Link to={RETURN_POLICY_PATH} className="link-slide">
                 Returns policy
               </Link>
             </li>
@@ -57,7 +57,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Eye Soul on ${network}`}
-                  className="hover:underline"
+                  className="link-slide"
                 >
                   {network}
                 </a>

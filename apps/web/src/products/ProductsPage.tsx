@@ -37,7 +37,7 @@ export function ProductsPage() {
                   <Link
                     to={path}
                     aria-current={current ? 'page' : undefined}
-                    className={`block rounded-full border px-4 py-2 text-sm font-medium transition ${current ? 'border-ink bg-ink text-paper' : 'border-line hover:border-ink'}`}
+                    className={`press block rounded-full border px-4 py-2 text-sm font-medium transition ${current ? 'border-ink bg-ink text-paper' : 'border-line hover:border-ink'}`}
                   >
                     {label}
                   </Link>

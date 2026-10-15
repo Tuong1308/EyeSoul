@@ -55,14 +55,14 @@ export function Hero() {
         <motion.div className="mt-8 flex flex-wrap justify-center gap-3" {...enter(1.1)}>
           <Link
             to={PRODUCT_TYPES.FILM_CAMERA.path}
-            className="rounded-full bg-amber px-6 py-3 text-sm font-semibold text-ink transition hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+            className="press rounded-full bg-amber px-6 py-3 text-sm font-semibold text-ink transition hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
           >
             Shop film cameras
           </Link>
           {/* A plain in-page link: the browser scrolls to the Sample Photo section (smoothly, see index.css). */}
           <a
             href="#sample-photos"
-            className="rounded-full border border-ink px-6 py-3 text-sm font-semibold transition hover:bg-ink hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
+            className="press rounded-full border border-ink px-6 py-3 text-sm font-semibold transition hover:bg-ink hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
           >
             See sample photos
           </a>

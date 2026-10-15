@@ -7,7 +7,7 @@ const CONFIRMATION_MS = 2000;
 
 /** Hides the button on screens with hover until the surrounding `group` is hovered or holds focus. */
 const REVEAL_ON_HOVER =
-  'can-hover:translate-y-2 can-hover:opacity-0 can-hover:group-hover:translate-y-0 can-hover:group-hover:opacity-100 can-hover:group-focus-within:translate-y-0 can-hover:group-focus-within:opacity-100';
+  'can-hover:opacity-0 can-hover:group-hover:opacity-100 can-hover:group-focus-within:opacity-100 can-hover:motion-safe:translate-y-2 can-hover:motion-safe:group-hover:translate-y-0 can-hover:motion-safe:group-focus-within:translate-y-0';
 
 interface AddToCartButtonProps {
   product: ProductCard;
@@ -57,7 +57,7 @@ export function AddToCartButton({ product, describedBy, className = '' }: AddToC
           add(product);
           setAddedCount((count) => count + 1);
         }}
-        className="flex h-11 w-11 items-center justify-center rounded-full bg-ink text-paper shadow-soft transition enabled:hover:scale-110 enabled:hover:bg-ink/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber disabled:bg-paper disabled:text-ink"
+        className="flex h-11 w-11 items-center justify-center rounded-full bg-ink text-paper shadow-soft transition enabled:hover:bg-ink/85 motion-safe:enabled:hover:scale-110 motion-safe:enabled:active:scale-[.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber disabled:bg-paper disabled:text-ink"
       >
         {alreadyInCart ? <CheckIcon /> : <PlusIcon />}
       </button>

@@ -79,7 +79,7 @@ export function MiniCart({ onClose }: { onClose: () => void }) {
               <Link
                 to={CHECKOUT_PATH}
                 onClick={onClose}
-                className="mt-4 block rounded-full bg-ink py-3 text-center text-sm font-semibold text-paper transition hover:bg-ink/85"
+                className="press mt-4 block rounded-full bg-ink py-3 text-center text-sm font-semibold text-paper transition hover:bg-ink/85"
               >
                 Checkout
               </Link>
@@ -99,7 +99,7 @@ function CartLineItem({ line, onNavigate }: { line: CartLine; onNavigate: () => 
         {line.photo && <img src={line.photo.url} alt={line.photo.alt} className="h-full w-full object-cover" />}
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <Link to={productPath(line.slug)} onClick={onNavigate} className="text-sm font-medium leading-snug hover:underline">
+        <Link to={productPath(line.slug)} onClick={onNavigate} className="link-slide text-sm font-medium leading-snug">
           {line.name}
         </Link>
         <p className="text-xs text-ink/60">Unit price {formatVnd(line.priceVnd)}</p>

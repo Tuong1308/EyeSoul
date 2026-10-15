@@ -10,10 +10,18 @@ import { productPath } from '../lib/routes';
 export function ProductCardView({ product }: { product: ProductCard }) {
   const nameId = useId();
   return (
-    <article aria-labelledby={nameId} className="group relative">
+    <article
+      aria-labelledby={nameId}
+      className="group relative transition duration-300 ease-out motion-safe:can-hover:hover:-translate-y-1"
+    >
       <div className="grain aspect-[4/5] rounded-xl2 bg-line">
         {product.photo && (
-          <img src={product.photo.url} alt={product.photo.alt} loading="lazy" className="h-full w-full object-cover" />
+          <img
+            src={product.photo.url}
+            alt={product.photo.alt}
+            loading="lazy"
+            className="h-full w-full object-cover transition duration-700 ease-out motion-safe:group-hover:scale-105"
+          />
         )}
         {product.conditionGrade && <ConditionGradeBadge grade={product.conditionGrade} className="absolute left-3 top-3" />}
         {product.availability === 'out_of_stock' ? (

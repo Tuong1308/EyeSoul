@@ -50,7 +50,7 @@ export function ProductsMenu({ onNavigate }: { onNavigate: () => void }) {
         aria-expanded={dropsDown ? open : undefined}
         aria-controls={dropsDown ? panelId : undefined}
         onClick={follow}
-        className={`flex items-center gap-1 py-3 text-sm font-medium underline-offset-8 hover:underline lg:py-1 ${onProducts ? 'underline decoration-amber decoration-2' : ''}`}
+        className={`flex items-center gap-1 py-3 text-sm font-medium underline-offset-8 lg:py-1 ${onProducts ? 'underline decoration-amber decoration-2' : 'link-slide'}`}
       >
         Products
         <span aria-hidden className={`hidden text-xs transition lg:inline ${open ? 'rotate-180' : ''}`}>
@@ -76,7 +76,7 @@ export function ProductsMenu({ onNavigate }: { onNavigate: () => void }) {
                     src={PRODUCT_TYPE_PHOTOS[type]}
                     alt=""
                     loading="lazy"
-                    className="h-full w-full object-cover transition duration-500 group-hover/tile:scale-105"
+                    className="h-full w-full object-cover transition duration-500 motion-safe:group-hover/tile:scale-105"
                   />
                 </span>
                 <span className={`lg:mt-2 lg:block lg:font-medium ${current ? 'text-ink underline decoration-amber decoration-2 underline-offset-4' : ''}`}>

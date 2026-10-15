@@ -31,15 +31,31 @@ interface RevealProps {
  * Reveals its children once, the first time enough of it scrolls into view. Children are `motion` elements with
  * `hidden` and `shown` variants (see `rise`), played in turn `stagger` seconds apart. A child whose variant sets
  * its own `delay` leaves the stagger: its delay counts from the start of the reveal.
- * With reduced motion everything is shown from the start, without movement.
+ * With reduced motion the children start in their `shown` state and the whole block just fades in, quickly.
  */
 export function Reveal({ children, className, stagger = 0, delayChildren = 0, amount = 0.3 }: RevealProps) {
   const reduceMotion = useReducedMotion();
+  if (reduceMotion) {
+    return (
+      <motion.div
+        className={className}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount }}
+        transition={{ duration: 0.2 }}
+      >
+        {/* `contents` keeps the children laid out by the outer block (a grid, a row). */}
+        <motion.div className="contents" initial="shown" animate="shown">
+          {children}
+        </motion.div>
+      </motion.div>
+    );
+  }
   return (
     <motion.div
       className={className}
       variants={{ hidden: {}, shown: { transition: { staggerChildren: stagger, delayChildren } } }}
-      initial={reduceMotion ? 'shown' : 'hidden'}
+      initial="hidden"
       whileInView="shown"
       viewport={{ once: true, amount }}
     >

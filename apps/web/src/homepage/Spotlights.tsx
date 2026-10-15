@@ -123,7 +123,7 @@ function SpotlightCopy({ spotlight }: { spotlight: Spotlight }) {
       <motion.div variants={LINE} className="mt-8">
         <Link
           to={cta.to}
-          className={`inline-block rounded-full px-6 py-3 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber ${tone.button}`}
+          className={`press inline-block rounded-full px-6 py-3 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber ${tone.button}`}
         >
           {cta.label}
         </Link>
