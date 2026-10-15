@@ -3,10 +3,10 @@ import { Link } from 'react-router';
 import { LOGIN_PATH } from '../lib/routes';
 import { useSession } from '../session/session-context';
 
-/** "Đăng nhập" when signed out; the shopper's name with an account menu when signed in. */
+/** "Log in" when signed out; the shopper's name with an account menu when signed in. */
 export function AccountControl() {
   const { session, signOut } = useSession();
-  // Signing out removes the account button; focus moves on to "Đăng nhập" instead of falling to the page.
+  // Signing out removes the account button; focus moves on to "Log in" instead of falling to the page.
   const focusLoginLink = useRef(false);
 
   if (session.status === 'signed-out') {
@@ -21,7 +21,7 @@ export function AccountControl() {
         }}
         className="flex h-11 items-center rounded-full px-3 text-sm font-medium hover:bg-line/60"
       >
-        Đăng nhập
+        Log in
       </Link>
     );
   }
@@ -76,7 +76,7 @@ function AccountMenu({ displayName, onSignOut }: { displayName: string; onSignOu
         ref={buttonRef}
         id={buttonId}
         type="button"
-        aria-label={`Tài khoản: ${displayName}`}
+        aria-label={`Account: ${displayName}`}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
@@ -105,7 +105,7 @@ function AccountMenu({ displayName, onSignOut }: { displayName: string; onSignOu
             }}
             className="block w-full rounded-xl px-4 py-2 text-left text-sm hover:bg-line/60"
           >
-            Đăng xuất
+            Log out
           </button>
         </div>
       )}

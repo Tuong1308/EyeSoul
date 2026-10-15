@@ -6,8 +6,8 @@ import { SAMPLE_PHOTO_LIMIT, TILE_SIZES } from './SamplePhotoGrid';
  */
 export function HomePageSkeleton() {
   return (
-    <div role="status" aria-label="Đang tải sản phẩm">
-      <p className="sr-only">Đang tải sản phẩm…</p>
+    <div role="status" aria-label="Loading products">
+      <p className="sr-only">Loading products…</p>
       {[0, 1, 2].map((row) => (
         <div key={row} aria-hidden className="mt-16">
           <TitleSkeleton />

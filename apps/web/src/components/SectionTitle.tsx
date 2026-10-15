@@ -7,7 +7,7 @@ interface SectionTitleProps {
   lead: string;
   /** Rendered in italics after the lead, magazine style. */
   emphasis: string;
-  /** Sits at the right end of the title, e.g. a "Xem tất cả" link. */
+  /** Sits at the right end of the title, e.g. a "View all" link. */
   action?: ReactNode;
 }
 

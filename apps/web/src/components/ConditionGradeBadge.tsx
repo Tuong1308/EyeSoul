@@ -5,7 +5,7 @@ export function ConditionGradeBadge({ grade, className = '' }: { grade: Conditio
   return (
     <span
       role="img"
-      aria-label={`Tình trạng ${grade}`}
+      aria-label={`Condition ${grade}`}
       className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-ink bg-card font-serif text-base font-bold italic leading-none ${className}`}
     >
       {grade}

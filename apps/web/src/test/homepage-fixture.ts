@@ -42,13 +42,13 @@ export const homepage: HomepageResponse = {
     {
       id: 'sample-1',
       url: 'https://img.test/sample-portra.jpg',
-      alt: 'Phố cổ Hội An lúc hoàng hôn',
+      alt: 'Hoi An old town at sunset',
       filmRoll: { slug: 'kodak-portra-400-35mm-36', name: 'Kodak Portra 400' },
     },
     {
       id: 'sample-2',
       url: 'https://img.test/sample-hp5.jpg',
-      alt: 'Người bán hàng rong ở Sài Gòn',
+      alt: 'A street vendor in Saigon',
       filmRoll: { slug: 'ilford-hp5-plus-35mm-36', name: 'Ilford HP5 Plus 400' },
     },
   ],

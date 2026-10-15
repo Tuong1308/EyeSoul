@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { useCart } from '../cart/cart-context';
 import { MiniCart } from '../cart/MiniCart';
 import { PRODUCT_TYPES } from '../lib/routes';
@@ -17,6 +17,9 @@ export function Header() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const navId = useId();
+  // Product Type links differ only by `?type=`, which NavLink ignores when deciding which one is active.
+  const { pathname, search } = useLocation();
+  const currentPath = pathname + search;
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -33,7 +36,7 @@ export function Header() {
         <div className="relative mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-3 md:flex-nowrap md:gap-6 md:px-8">
           <button
             type="button"
-            aria-label="Danh mục"
+            aria-label="Menu"
             aria-expanded={menuOpen}
             aria-controls={navId}
             onClick={() => setMenuOpen((open) => !open)}
@@ -41,27 +44,26 @@ export function Header() {
           >
             <MenuIcon open={menuOpen} />
           </button>
-          <Link to="/" aria-label="Eye Soul, về trang chủ" className="font-serif text-2xl font-bold">
+          <Link to="/" aria-label="Eye Soul, home" className="font-serif text-2xl font-bold">
             Eye <em className="font-medium">Soul</em>
           </Link>
           {/* One nav for both layouts: inline from lg up, a drop-down panel below the bar on phones and tablets. */}
           <nav
             id={navId}
-            aria-label="Danh mục sản phẩm"
+            aria-label="Product types"
             className={`${menuOpen ? 'block' : 'hidden'} absolute inset-x-0 top-full border-b border-line bg-paper shadow-soft lg:static lg:block lg:border-0 lg:bg-transparent lg:shadow-none`}
           >
             <ul className="flex flex-col px-4 py-2 lg:flex-row lg:gap-8 lg:p-0">
               {Object.values(PRODUCT_TYPES).map(({ label, path }) => (
                 <li key={path}>
-                  <NavLink
+                  <Link
                     to={path}
+                    aria-current={path === currentPath ? 'page' : undefined}
                     onClick={() => setMenuOpen(false)}
-                    className={({ isActive }) =>
-                      `block py-3 text-sm font-medium underline-offset-8 hover:underline lg:py-1 ${isActive ? 'underline decoration-amber decoration-2' : ''}`
-                    }
+                    className={`block py-3 text-sm font-medium underline-offset-8 hover:underline lg:py-1 ${path === currentPath ? 'underline decoration-amber decoration-2' : ''}`}
                   >
                     {label}
-                  </NavLink>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -75,7 +77,7 @@ export function Header() {
             <button
               ref={cartButtonRef}
               type="button"
-              aria-label={`Giỏ hàng, ${count} sản phẩm`}
+              aria-label={`Cart, ${count} ${count === 1 ? 'item' : 'items'}`}
               aria-haspopup="dialog"
               aria-expanded={cartOpen}
               onClick={() => {

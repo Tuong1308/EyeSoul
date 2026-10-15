@@ -5,10 +5,12 @@ import { CartProvider } from './cart/cart-context';
 import { HomePage } from './homepage/HomePage';
 import { SiteLayout } from './layout/SiteLayout';
 import {
+  ASSISTANT_PATH,
   CHECKOUT_PATH,
   LOGIN_PATH,
-  PRODUCT_TYPES,
+  PORTFOLIO_PATH,
   productPath,
+  PRODUCTS_PATH,
   RETURN_POLICY_PATH,
   SEARCH_PATH,
   SHIPPING_POLICY_PATH,
@@ -36,15 +38,16 @@ export function AppRoutes() {
     <Routes>
       <Route element={<SiteLayout />}>
         <Route path="/" element={<HomePage />} />
-        {Object.values(PRODUCT_TYPES).map(({ label, path }) => (
-          <Route key={path} path={path} element={<PlaceholderPage title={label} />} />
-        ))}
+        {/* Stands in for the Products page (any `?type=`) until it is built. */}
+        <Route path={PRODUCTS_PATH} element={<PlaceholderPage title="Products" />} />
         <Route path={productPath(':slug')} element={<ProductPlaceholderPage />} />
         <Route path={SEARCH_PATH} element={<SearchResultsPlaceholderPage />} />
         <Route path={LOGIN_PATH} element={<LoginPlaceholderPage />} />
-        <Route path={CHECKOUT_PATH} element={<PlaceholderPage title="Thanh toán" />} />
-        <Route path={SHIPPING_POLICY_PATH} element={<PlaceholderPage title="Chính sách vận chuyển" />} />
-        <Route path={RETURN_POLICY_PATH} element={<PlaceholderPage title="Chính sách đổi trả" />} />
+        <Route path={CHECKOUT_PATH} element={<PlaceholderPage title="Checkout" />} />
+        <Route path={SHIPPING_POLICY_PATH} element={<PlaceholderPage title="Shipping policy" />} />
+        <Route path={RETURN_POLICY_PATH} element={<PlaceholderPage title="Returns policy" />} />
+        <Route path={PORTFOLIO_PATH} element={<PlaceholderPage title="Portfolio" />} />
+        <Route path={ASSISTANT_PATH} element={<PlaceholderPage title="AI assistant" />} />
       </Route>
     </Routes>
   );
