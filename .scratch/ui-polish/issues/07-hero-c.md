@@ -18,6 +18,8 @@ Below that:
 
 The hero needs no API data. See spec (Hero) for the entrance timings.
 
+**Note (from 04):** keep the `data-hero` attribute on the hero region; the header uses it to tighten once the hero has scrolled past.
+
 **Blocked by:** 03
 
 **Status:** ready-for-agent

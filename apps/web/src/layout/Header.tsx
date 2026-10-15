@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router';
+import { Link } from 'react-router';
 import { useCart } from '../cart/cart-context';
 import { MiniCart } from '../cart/MiniCart';
 import { LogoHorizontal } from '../components/Logo';
-import { PRODUCT_TYPES } from '../lib/routes';
 import { SearchBox } from '../search/SearchBox';
 import { AccountControl } from './AccountControl';
+import { ProductsMenu } from './ProductsMenu';
 
 export function Header() {
   const { count } = useCart();
@@ -18,9 +18,8 @@ export function Header() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const navId = useId();
-  // Product Type links differ only by `?type=`, which NavLink ignores when deciding which one is active.
-  const { pathname, search } = useLocation();
-  const currentPath = pathname + search;
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const tight = useScrolledPastHero();
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -33,8 +32,13 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-30 border-b border-line bg-paper">
-        <div className="frame relative flex flex-wrap items-center gap-2 py-3 md:flex-nowrap md:gap-6">
+      {/* Pinned, never hidden; past the hero it tightens up with a shadow and a translucent blurred background. */}
+      <header
+        className={`sticky top-0 z-30 border-b transition-[background-color,box-shadow,border-color] duration-300 ${tight ? 'border-transparent bg-paper/80 shadow-soft backdrop-blur-md' : 'border-line bg-paper'}`}
+      >
+        <div
+          className={`frame relative flex flex-wrap items-center gap-2 transition-[padding] duration-300 md:flex-nowrap md:gap-6 ${tight ? 'py-1.5' : 'py-3'}`}
+        >
           <button
             type="button"
             aria-label="Menu"
@@ -51,22 +55,11 @@ export function Header() {
           {/* One nav for both layouts: inline from lg up, a drop-down panel below the bar on phones and tablets. */}
           <nav
             id={navId}
-            aria-label="Product types"
+            aria-label="Main"
             className={`${menuOpen ? 'block' : 'hidden'} absolute inset-x-0 top-full border-b border-line bg-paper shadow-soft lg:static lg:block lg:border-0 lg:bg-transparent lg:shadow-none`}
           >
             <ul className="flex flex-col px-4 py-2 lg:flex-row lg:gap-8 lg:p-0">
-              {Object.values(PRODUCT_TYPES).map(({ label, path }) => (
-                <li key={path}>
-                  <Link
-                    to={path}
-                    aria-current={path === currentPath ? 'page' : undefined}
-                    onClick={() => setMenuOpen(false)}
-                    className={`block py-3 text-sm font-medium underline-offset-8 hover:underline lg:py-1 ${path === currentPath ? 'underline decoration-amber decoration-2' : ''}`}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
+              <ProductsMenu onNavigate={closeMenu} />
             </ul>
           </nav>
           {/* A full-width second row on phones; inline from md up. Starting a search closes the menu. */}
@@ -104,6 +97,28 @@ export function Header() {
     </>
   );
 }
+
+/**
+ * Whether the page has scrolled past the hero (the element marked `data-hero`), or past a sliver of the page on
+ * pages without one.
+ */
+function useScrolledPastHero() {
+  const [past, setPast] = useState(false);
+  useEffect(() => {
+    const update = () => {
+      const hero = document.querySelector('[data-hero]');
+      const threshold = hero ? hero.getBoundingClientRect().bottom + window.scrollY - HEADER_ALLOWANCE : HEADER_ALLOWANCE;
+      setPast(window.scrollY > threshold);
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
+  return past;
+}
+
+/** Roughly the untightened header's height, so it tightens as the hero slides out from under it. */
+const HEADER_ALLOWANCE = 72;
 
 function MenuIcon({ open }: { open: boolean }) {
   return (

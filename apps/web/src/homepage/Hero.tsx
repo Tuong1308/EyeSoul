@@ -13,6 +13,7 @@ export function Hero() {
   return (
     <section
       aria-label="About Eye Soul"
+      data-hero
       className="grain relative mt-6 flex min-h-[70vh] items-end overflow-hidden rounded-xl2 bg-ink shadow-soft md:min-h-[78vh]"
     >
       <motion.img

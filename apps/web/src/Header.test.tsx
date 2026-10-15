@@ -13,25 +13,58 @@ function signInFromDevPanel(displayName: string) {
   fireEvent.click(within(devPanel).getByRole('button', { name: 'Log in (stub)' }));
 }
 
+function mainNav() {
+  return within(header()).getByRole('navigation', { name: 'Main' });
+}
+
 describe('Header navigation', () => {
   beforeEach(serveHomepage);
+
+  it('offers one "Products" link to the Products page, marked current once there', async () => {
+    renderApp('/');
+
+    const products = within(mainNav()).getByRole('link', { name: 'Products' });
+    expect(products).toHaveAttribute('href', '/products');
+    expect(products).not.toHaveAttribute('aria-current');
+    fireEvent.click(products);
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Products' })).toBeInTheDocument();
+    expect(within(mainNav()).getByRole('link', { name: 'Products' })).toHaveAttribute('aria-current', 'page');
+  });
 
   it.each([
     ['Digital cameras', '/products?type=digital-camera'],
     ['Film cameras', '/products?type=film-camera'],
     ['Film rolls', '/products?type=film-roll'],
-  ])('links to the Products page filtered to %s', async (label, path) => {
+  ])('drops down a link to the Products page filtered to %s', async (label, path) => {
     renderApp('/');
 
-    const nav = within(header()).getByRole('navigation', { name: 'Product types' });
-    const link = within(nav).getByRole('link', { name: label });
+    const link = within(mainNav()).getByRole('link', { name: label });
     expect(link).toHaveAttribute('href', path);
     fireEvent.click(link);
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Products' })).toBeInTheDocument();
   });
 
-  it('folds the Product Type links behind a compact menu button, which closes once a link is followed', async () => {
+  it('keeps the drop-down open while keyboard focus moves from "Products" into it', () => {
+    renderApp('/');
+
+    const products = within(mainNav()).getByRole('link', { name: 'Products' });
+    expect(products).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.focus(products);
+    expect(products).toHaveAttribute('aria-expanded', 'true');
+    const filmRolls = within(mainNav()).getByRole('link', { name: 'Film rolls' });
+    fireEvent.blur(products, { relatedTarget: filmRolls });
+    fireEvent.focus(filmRolls);
+    expect(products).toHaveAttribute('aria-expanded', 'true');
+
+    fireEvent.keyDown(filmRolls, { key: 'Escape' });
+    expect(products).toHaveAttribute('aria-expanded', 'false');
+    expect(products).toHaveFocus();
+  });
+
+  it('folds Products and its Product Types behind a compact menu button, which closes once a link is followed', async () => {
     renderApp('/');
 
     const menuButton = within(header()).getByRole('button', { name: 'Menu' });
@@ -39,7 +72,8 @@ describe('Header navigation', () => {
 
     fireEvent.click(menuButton);
     expect(menuButton).toHaveAttribute('aria-expanded', 'true');
-    const nav = screen.getByRole('navigation', { name: 'Product types' });
+    const nav = mainNav();
+    expect(within(nav).getByRole('link', { name: 'Products' })).toBeInTheDocument();
     expect(menuButton).toHaveAttribute('aria-controls', nav.id);
 
     fireEvent.click(within(nav).getByRole('link', { name: 'Film cameras' }));
