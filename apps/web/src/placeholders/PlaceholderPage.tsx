@@ -5,7 +5,7 @@ import { StubSessionPanel } from '../session/StubSessionPanel';
 /** Stands in for a page that a later feature will build. */
 export function PlaceholderPage({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-24 md:px-8">
+    <main className="frame py-24">
       <h1 className="font-serif text-4xl md:text-6xl">{title}</h1>
       {children}
       <p className="mt-6 text-sm text-ink/70">This page is under construction.</p>

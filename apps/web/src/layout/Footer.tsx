@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { LogoStacked } from '../components/Logo';
 import { RETURN_POLICY_PATH, SHIPPING_POLICY_PATH } from '../lib/routes';
 
 // Contact details and social accounts are placeholders until the shop supplies real ones.
@@ -10,13 +11,13 @@ const SOCIAL_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="mx-auto max-w-6xl px-4 pb-12 md:px-8">
-      <div className="grid gap-10 border-t border-ink pt-8 md:grid-cols-[2fr_1fr_1fr]">
+    <footer className="bg-ink text-paper">
+      <div className="frame grid gap-10 pb-10 pt-16 md:grid-cols-[2fr_1fr_1fr]">
         <div>
-          <Link to="/" aria-label="Eye Soul, home" className="font-serif text-3xl font-bold">
-            Eye <em className="font-medium">Soul</em>
+          <Link to="/" aria-label="Eye Soul, home" className="inline-block">
+            <LogoStacked className="h-28 w-auto" />
           </Link>
-          <p className="mt-3 max-w-xs text-sm text-ink/70">Digital cameras, used film cameras and film rolls.</p>
+          <p className="mt-6 max-w-xs text-sm text-paper/70">Digital cameras, used film cameras and film rolls.</p>
           <address className="mt-4 space-y-1 text-sm not-italic">
             <p>123 Nguyen Hue, District 1, Ho Chi Minh City</p>
             <p>
@@ -65,7 +66,7 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <p className="mt-10 text-xs text-ink/60">© {new Date().getFullYear()} Eye Soul</p>
+      <p className="frame border-t border-paper/15 py-6 text-xs text-paper/60">© {new Date().getFullYear()} Eye Soul</p>
     </footer>
   );
 }

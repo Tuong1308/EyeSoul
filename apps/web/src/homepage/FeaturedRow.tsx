@@ -13,7 +13,7 @@ const ROW_TITLES: Record<ProductType, { kicker: string; lead: string; emphasis: 
 export function FeaturedRow({ row }: { row: HomepageRow }) {
   const headingId = `featured-${row.productType.toLowerCase()}`;
   return (
-    <section aria-labelledby={headingId} className="mt-16">
+    <section aria-labelledby={headingId} className="frame mt-16">
       <SectionTitle
         id={headingId}
         {...ROW_TITLES[row.productType]}

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import { useCart } from '../cart/cart-context';
 import { MiniCart } from '../cart/MiniCart';
+import { LogoHorizontal } from '../components/Logo';
 import { PRODUCT_TYPES } from '../lib/routes';
 import { SearchBox } from '../search/SearchBox';
 import { AccountControl } from './AccountControl';
@@ -33,7 +34,7 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-30 border-b border-line bg-paper">
-        <div className="relative mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-3 md:flex-nowrap md:gap-6 md:px-8">
+        <div className="frame relative flex flex-wrap items-center gap-2 py-3 md:flex-nowrap md:gap-6">
           <button
             type="button"
             aria-label="Menu"
@@ -44,8 +45,8 @@ export function Header() {
           >
             <MenuIcon open={menuOpen} />
           </button>
-          <Link to="/" aria-label="Eye Soul, home" className="font-serif text-2xl font-bold">
-            Eye <em className="font-medium">Soul</em>
+          <Link to="/" aria-label="Eye Soul, home" className="shrink-0">
+            <LogoHorizontal className="h-8 w-auto md:h-9" />
           </Link>
           {/* One nav for both layouts: inline from lg up, a drop-down panel below the bar on phones and tablets. */}
           <nav
