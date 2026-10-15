@@ -39,12 +39,12 @@ export function MiniCart({ onClose }: { onClose: () => void }) {
       >
         <div className="flex items-center justify-between border-b border-ink px-6 py-5">
           <h2 id={titleId} className="font-serif text-3xl">
-            Giỏ hàng
+            Your cart
           </h2>
           <button
             ref={closeRef}
             type="button"
-            aria-label="Đóng giỏ hàng"
+            aria-label="Close cart"
             onClick={onClose}
             className="flex h-10 w-10 items-center justify-center rounded-full text-2xl leading-none hover:bg-line/60"
           >
@@ -54,13 +54,13 @@ export function MiniCart({ onClose }: { onClose: () => void }) {
 
         {lines.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
-            <p className="font-serif text-xl italic">Giỏ hàng của bạn đang trống.</p>
+            <p className="font-serif text-xl italic">Your cart is empty.</p>
             <Link
               to="/"
               onClick={onClose}
               className="text-sm font-medium underline decoration-amber decoration-2 underline-offset-4"
             >
-              Tiếp tục mua sắm
+              Continue shopping
             </Link>
           </div>
         ) : (
@@ -73,7 +73,7 @@ export function MiniCart({ onClose }: { onClose: () => void }) {
 
             <div className="border-t border-line px-6 py-5">
               <dl className="flex items-baseline justify-between">
-                <dt className="text-sm font-medium">Tạm tính</dt>
+                <dt className="text-sm font-medium">Subtotal</dt>
                 <dd className="font-serif text-2xl font-bold">{formatVnd(subtotalVnd)}</dd>
               </dl>
               <Link
@@ -81,7 +81,7 @@ export function MiniCart({ onClose }: { onClose: () => void }) {
                 onClick={onClose}
                 className="mt-4 block rounded-full bg-ink py-3 text-center text-sm font-semibold text-paper transition hover:bg-ink/85"
               >
-                Thanh toán
+                Checkout
               </Link>
             </div>
           </>
@@ -102,16 +102,16 @@ function CartLineItem({ line, onNavigate }: { line: CartLine; onNavigate: () => 
         <Link to={productPath(line.slug)} onClick={onNavigate} className="text-sm font-medium leading-snug hover:underline">
           {line.name}
         </Link>
-        <p className="text-xs text-ink/60">Đơn giá {formatVnd(line.priceVnd)}</p>
+        <p className="text-xs text-ink/60">Unit price {formatVnd(line.priceVnd)}</p>
         {isUniqueUnit(line.productType) ? (
-          <p className="mt-auto text-sm">Số lượng: 1</p>
+          <p className="mt-auto text-sm">Quantity: 1</p>
         ) : (
-          <div role="group" aria-label="Số lượng" className="mt-auto flex items-center gap-2 text-sm">
-            <StepButton label="Giảm số lượng" disabled={line.quantity <= 1} onClick={() => setQuantity(line.productId, line.quantity - 1)}>
+          <div role="group" aria-label="Quantity" className="mt-auto flex items-center gap-2 text-sm">
+            <StepButton label="Decrease quantity" disabled={line.quantity <= 1} onClick={() => setQuantity(line.productId, line.quantity - 1)}>
               −
             </StepButton>
             <span className="min-w-6 text-center font-medium">{line.quantity}</span>
-            <StepButton label="Tăng số lượng" onClick={() => setQuantity(line.productId, line.quantity + 1)}>
+            <StepButton label="Increase quantity" onClick={() => setQuantity(line.productId, line.quantity + 1)}>
               +
             </StepButton>
           </div>
@@ -121,11 +121,11 @@ function CartLineItem({ line, onNavigate }: { line: CartLine; onNavigate: () => 
         <p className="font-serif text-base font-bold">{formatVnd(lineTotalVnd(line))}</p>
         <button
           type="button"
-          aria-label={`Xóa ${line.name} khỏi giỏ`}
+          aria-label={`Remove ${line.name} from cart`}
           onClick={() => remove(line.productId)}
           className="text-xs text-ink/60 underline underline-offset-4 hover:text-ink"
         >
-          Xóa
+          Remove
         </button>
       </div>
     </li>

@@ -22,7 +22,7 @@ export function SamplePhotoGrid({ photos }: { photos: HomepageSamplePhoto[] }) {
   if (photos.length === 0) return null;
   return (
     <section aria-labelledby="sample-photos" className="mt-16">
-      <SectionTitle id="sample-photos" kicker="Ảnh thật · Chụp trên film" lead="Ảnh mẫu" emphasis="từ film" />
+      <SectionTitle id="sample-photos" kicker="Real photos · Shot on film" lead="Shot on" emphasis="our film" />
       <ul className="mt-8 grid grid-flow-dense auto-rows-[140px] grid-cols-2 gap-3 md:auto-rows-[180px] md:grid-cols-4 md:gap-4">
         {photos.map((photo, index) => (
           <li key={photo.id} className={TILE_SIZES[index % TILE_SIZES.length]}>

@@ -12,7 +12,7 @@ export function Hero() {
   const reduceMotion = useReducedMotion();
   return (
     <section
-      aria-label="Giới thiệu Eye Soul"
+      aria-label="About Eye Soul"
       className="grain relative mt-6 flex min-h-[70vh] items-end overflow-hidden rounded-xl2 bg-ink shadow-soft md:min-h-[78vh]"
     >
       <motion.img
@@ -32,13 +32,13 @@ export function Hero() {
         transition={{ duration: reduceMotion ? 0.2 : 1.2, delay: reduceMotion ? 0 : 0.3, ease: 'easeOut' }}
       >
         <p className="text-[11px] font-semibold uppercase tracking-[.2em] text-amber">
-          Eye Soul · Máy ảnh &amp; film
+          Eye Soul · Cameras &amp; film
         </p>
         <h1 className="mt-3 font-serif text-5xl leading-[.95] md:text-7xl">
-          Chậm lại, <em className="font-medium">nhìn kỹ hơn</em>
+          Slow down, <em className="font-medium">look closer</em>
         </h1>
         <p className="mt-4 max-w-md text-sm text-paper/80 md:text-base">
-          Máy ảnh digital mới, máy film đã qua tay được chấm điểm kỹ, và những cuộn film cho khoảnh khắc tiếp theo.
+          New digital cameras, hand-graded used film cameras, and the film rolls for your next frame.
         </p>
         <ul className="mt-8 flex flex-wrap gap-3">
           {CTA_ORDER.map((type) => (

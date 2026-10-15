@@ -24,7 +24,7 @@ export function ProductCardView({ product }: { product: ProductCard }) {
       </h3>
       <p className="mt-1 font-serif text-lg font-bold">{formatVnd(product.priceVnd)}</p>
       {product.availability === 'out_of_stock' ? (
-        <p className="mt-1 text-[11px] font-semibold uppercase tracking-[.2em] text-ink/60">Hết hàng</p>
+        <p className="mt-1 text-[11px] font-semibold uppercase tracking-[.2em] text-ink/60">Out of stock</p>
       ) : (
         <div className="mt-auto">
           <AddToCartButton product={product} describedBy={nameId} />

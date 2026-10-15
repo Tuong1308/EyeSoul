@@ -5,9 +5,9 @@ import { PRODUCT_TYPES } from '../lib/routes';
 import { ProductCardView } from './ProductCardView';
 
 const ROW_TITLES: Record<ProductType, { kicker: string; lead: string; emphasis: string }> = {
-  DIGITAL_CAMERA: { kicker: 'Nổi bật · Hàng mới', lead: 'Máy ảnh', emphasis: 'digital' },
-  FILM_CAMERA: { kicker: 'Nổi bật · Mỗi chiếc là duy nhất', lead: 'Máy ảnh', emphasis: 'film' },
-  FILM_ROLL: { kicker: 'Nổi bật · Phim mới', lead: 'Cuộn', emphasis: 'film' },
+  DIGITAL_CAMERA: { kicker: 'Featured · Brand new', lead: 'Digital', emphasis: 'cameras' },
+  FILM_CAMERA: { kicker: 'Featured · Each one is unique', lead: 'Film', emphasis: 'cameras' },
+  FILM_ROLL: { kicker: 'Featured · Fresh stock', lead: 'Film', emphasis: 'rolls' },
 };
 
 export function FeaturedRow({ row }: { row: HomepageRow }) {
@@ -22,7 +22,7 @@ export function FeaturedRow({ row }: { row: HomepageRow }) {
             to={PRODUCT_TYPES[row.productType].path}
             className="shrink-0 pb-1 text-sm font-medium underline decoration-amber decoration-2 underline-offset-4"
           >
-            Xem tất cả
+            View all
           </Link>
         }
       />

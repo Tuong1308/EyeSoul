@@ -28,7 +28,7 @@ function serveSuggestions(slowAnswers: Record<string, number> = {}) {
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function searchBox() {
-  return screen.getByRole('combobox', { name: 'Tìm sản phẩm' });
+  return screen.getByRole('combobox', { name: 'Search products' });
 }
 
 function type(text: string) {
@@ -47,7 +47,7 @@ describe('Header search', () => {
     expect(searchBox()).toHaveAttribute('aria-expanded', 'false');
 
     type('fu');
-    const listbox = await screen.findByRole('listbox', { name: 'Gợi ý tìm kiếm' });
+    const listbox = await screen.findByRole('listbox', { name: 'Search suggestions' });
     expect(searchBox()).toHaveAttribute('aria-expanded', 'true');
 
     const options = within(listbox).getAllByRole('option');
@@ -61,8 +61,8 @@ describe('Header search', () => {
       'src',
       'https://img.test/Fujica%20ST801.jpg',
     );
-    expect(within(fujica).getByText('Máy ảnh film')).toBeInTheDocument();
-    expect(within(fujica).getByText('3.200.000 ₫')).toBeInTheDocument();
+    expect(within(fujica).getByText('Film cameras')).toBeInTheDocument();
+    expect(within(fujica).getByText('₫3,200,000')).toBeInTheDocument();
   });
 
   it('never shows results for an older query, even when they arrive last', async () => {
@@ -72,9 +72,9 @@ describe('Header search', () => {
 
     type('fu');
     await wait(250);
-    expect(screen.getByText('Đang tìm…')).toBeInTheDocument();
+    expect(screen.getByText('Searching…')).toBeInTheDocument();
     type('fujica');
-    const listbox = await screen.findByRole('listbox', { name: 'Gợi ý tìm kiếm' });
+    const listbox = await screen.findByRole('listbox', { name: 'Search suggestions' });
 
     await wait(400);
 
@@ -88,8 +88,18 @@ describe('Header search', () => {
 
     type('leica');
 
-    expect(await screen.findByText('Không tìm thấy sản phẩm nào cho “leica”.')).toBeInTheDocument();
+    expect(await screen.findByText('No products found for “leica”.')).toBeInTheDocument();
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
+  it('says so when the suggestions fail to load, pointing to the full search instead', async () => {
+    server.use(http.get('http://api.test/search/suggestions', () => new HttpResponse(null, { status: 500 })));
+    renderApp('/');
+
+    type('fuji');
+
+    expect(await screen.findByText('Couldn’t load suggestions. Press Enter to see search results.')).toBeInTheDocument();
+    expect(screen.getByText('Couldn’t load suggestions', { selector: '[role="status"]' })).toBeInTheDocument();
   });
 
   function press(key: string) {
@@ -106,7 +116,7 @@ describe('Header search', () => {
     renderApp('/');
 
     type('fuji');
-    const listbox = await screen.findByRole('listbox', { name: 'Gợi ý tìm kiếm' });
+    const listbox = await screen.findByRole('listbox', { name: 'Search suggestions' });
     const [x100vi, fujica, c200] = within(listbox).getAllByRole('option');
     expect(highlighted()).toBeNull();
 
@@ -122,7 +132,7 @@ describe('Header search', () => {
 
     press('Enter');
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Sản phẩm' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Product' })).toBeInTheDocument();
     expect(screen.getByText('fujica-st801')).toBeInTheDocument();
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
@@ -136,14 +146,14 @@ describe('Header search', () => {
     press('ArrowDown');
     press('ArrowDown');
     type('fujic');
-    await screen.findByRole('listbox', { name: 'Gợi ý tìm kiếm' });
+    await screen.findByRole('listbox', { name: 'Search suggestions' });
     await waitFor(() => expect(screen.getAllByRole('option')).toHaveLength(1));
     type('fuji');
     await waitFor(() => expect(screen.getAllByRole('option')).toHaveLength(3));
 
     expect(highlighted()).toBeNull();
     press('Enter');
-    expect(await screen.findByRole('heading', { level: 1, name: 'Kết quả tìm kiếm' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Search results' })).toBeInTheDocument();
   });
 
   it('ignores the Enter that confirms an IME composition', async () => {
@@ -151,11 +161,11 @@ describe('Header search', () => {
     renderApp('/');
 
     type('fuji');
-    await screen.findByRole('listbox', { name: 'Gợi ý tìm kiếm' });
+    await screen.findByRole('listbox', { name: 'Search suggestions' });
     fireEvent.keyDown(searchBox(), { key: 'Enter', isComposing: true });
 
-    expect(screen.queryByRole('heading', { level: 1, name: 'Kết quả tìm kiếm' })).not.toBeInTheDocument();
-    expect(screen.getByRole('listbox', { name: 'Gợi ý tìm kiếm' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { level: 1, name: 'Search results' })).not.toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: 'Search suggestions' })).toBeInTheDocument();
   });
 
   it('announces how many suggestions there are', async () => {
@@ -164,9 +174,9 @@ describe('Header search', () => {
 
     type('fuji');
 
-    expect(await screen.findByText('3 gợi ý')).toBeInTheDocument();
+    expect(await screen.findByText('3 suggestions')).toBeInTheDocument();
     type('leica');
-    expect(await screen.findByText('Không có gợi ý')).toBeInTheDocument();
+    expect(await screen.findByText('No suggestions')).toBeInTheDocument();
   });
 
   it('closes the suggestions with Escape', async () => {
@@ -174,7 +184,7 @@ describe('Header search', () => {
     renderApp('/');
 
     type('fuji');
-    await screen.findByRole('listbox', { name: 'Gợi ý tìm kiếm' });
+    await screen.findByRole('listbox', { name: 'Search suggestions' });
     press('Escape');
 
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
@@ -187,7 +197,7 @@ describe('Header search', () => {
     renderApp('/');
 
     type('portra');
-    const listbox = await screen.findByRole('listbox', { name: 'Gợi ý tìm kiếm' });
+    const listbox = await screen.findByRole('listbox', { name: 'Search suggestions' });
     fireEvent.click(within(listbox).getByRole('option', { name: /Kodak Portra 400/ }));
 
     expect(await screen.findByText('kodak-portra-400')).toBeInTheDocument();
@@ -200,7 +210,7 @@ describe('Header search', () => {
     type('  fuji 400 ');
     press('Enter');
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Kết quả tìm kiếm' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Search results' })).toBeInTheDocument();
     expect(screen.getByText('“fuji 400”')).toBeInTheDocument();
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });

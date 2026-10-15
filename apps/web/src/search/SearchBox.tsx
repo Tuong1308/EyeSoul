@@ -75,14 +75,14 @@ export function SearchBox() {
       <input
         type="text"
         role="combobox"
-        aria-label="Tìm sản phẩm"
+        aria-label="Search products"
         aria-autocomplete="list"
         aria-expanded={expanded}
         aria-controls={showsListbox ? listboxId : undefined}
         aria-activedescendant={highlighted ? optionId(highlightedIndex) : undefined}
         autoComplete="off"
         enterKeyHint="search"
-        placeholder="Tìm máy ảnh, cuộn film…"
+        placeholder="Search cameras, film rolls…"
         value={input}
         onChange={(event) => {
           setInput(event.target.value);
@@ -107,7 +107,7 @@ export function SearchBox() {
           className="absolute inset-x-0 top-full z-10 mt-2 overflow-hidden rounded-xl2 border border-line bg-card shadow-soft"
         >
           {showsListbox ? (
-            <ul id={listboxId} role="listbox" aria-label="Gợi ý tìm kiếm" className="max-h-[70vh] overflow-y-auto py-2">
+            <ul id={listboxId} role="listbox" aria-label="Search suggestions" className="max-h-[70vh] overflow-y-auto py-2">
               {products.map((product, index) => (
                 <li
                   key={product.id}
@@ -141,23 +141,27 @@ export function SearchBox() {
 function panelMessage(suggestions: SuggestionsState, term: string) {
   switch (suggestions.status) {
     case 'success':
-      return `Không tìm thấy sản phẩm nào cho “${term}”.`;
+      return `No products found for “${term}”.`;
     case 'error':
-      return 'Không tải được gợi ý. Nhấn Enter để xem kết quả tìm kiếm.';
+      return 'Couldn’t load suggestions. Press Enter to see search results.';
     default:
-      return 'Đang tìm…';
+      return 'Searching…';
   }
 }
 
 function announcement(suggestions: SuggestionsState) {
   switch (suggestions.status) {
     case 'success':
-      return suggestions.products.length ? `${suggestions.products.length} gợi ý` : 'Không có gợi ý';
+      return suggestions.products.length ? suggestionCount(suggestions.products.length) : 'No suggestions';
     case 'error':
-      return 'Không tải được gợi ý';
+      return 'Couldn’t load suggestions';
     default:
       return '';
   }
+}
+
+function suggestionCount(count: number) {
+  return count === 1 ? '1 suggestion' : `${count} suggestions`;
 }
 
 function SearchIcon() {

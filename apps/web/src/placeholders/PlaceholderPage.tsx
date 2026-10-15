@@ -8,9 +8,9 @@ export function PlaceholderPage({ title, children }: { title: string; children?:
     <main className="mx-auto max-w-6xl px-4 py-24 md:px-8">
       <h1 className="font-serif text-4xl md:text-6xl">{title}</h1>
       {children}
-      <p className="mt-6 text-sm text-ink/70">Trang này đang được xây dựng.</p>
+      <p className="mt-6 text-sm text-ink/70">This page is under construction.</p>
       <Link to="/" className="mt-4 inline-block text-sm font-medium underline underline-offset-4">
-        Về trang chủ
+        Back to home
       </Link>
     </main>
   );
@@ -19,20 +19,20 @@ export function PlaceholderPage({ title, children }: { title: string; children?:
 export function ProductPlaceholderPage() {
   const { slug } = useParams();
   return (
-    <PlaceholderPage title="Sản phẩm">
+    <PlaceholderPage title="Product">
       <p className="mt-4 font-mono text-sm">{slug}</p>
     </PlaceholderPage>
   );
 }
 
 export function LoginPlaceholderPage() {
-  return <PlaceholderPage title="Đăng nhập">{import.meta.env.DEV && <StubSessionPanel />}</PlaceholderPage>;
+  return <PlaceholderPage title="Log in">{import.meta.env.DEV && <StubSessionPanel />}</PlaceholderPage>;
 }
 
 export function SearchResultsPlaceholderPage() {
   const [params] = useSearchParams();
   return (
-    <PlaceholderPage title="Kết quả tìm kiếm">
+    <PlaceholderPage title="Search results">
       <p className="mt-4 font-serif text-xl italic">“{params.get('q') ?? ''}”</p>
     </PlaceholderPage>
   );

@@ -34,10 +34,10 @@ export function AddToCartButton({ product, describedBy }: { product: ProductCard
         }}
         className="relative z-10 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-paper transition hover:bg-ink/85 disabled:bg-line disabled:text-ink/60"
       >
-        {alreadyInCart ? 'Đã có trong giỏ' : 'Thêm vào giỏ'}
+        {alreadyInCart ? 'In your cart' : 'Add to cart'}
       </button>
       <p role="status" className="text-xs font-medium text-ink/70">
-        {confirming && '✓ Đã thêm vào giỏ'}
+        {confirming && '✓ Added to cart'}
       </p>
     </div>
   );
