@@ -244,7 +244,7 @@ Replaces the dark Ken Burns hero entirely. The region keeps an accessible name (
 - They are kept in a separate seed photo map with URL, licence and source page for each photo, so attribution travels with the data. Seeding fails loudly if a product has no photo.
 - The prototype branch already holds a vetted map with every URL checked to load.
 - Product names, photo alt text, descriptions and Film Camera condition notes are rewritten in English (e.g. "Kodak Portra 400 – 35mm – 36 exp", "Canon EOS R8 with 24-50mm").
-- Sample Photos remain placeholder images.
+- Sample Photos are free photos from the Unsplash "film photography" search, each used once, with licence and source recorded in the seed photo map (owner request, 2026-10-16; previously placeholder images).
 
 **Clean-up**
 

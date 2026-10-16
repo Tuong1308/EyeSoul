@@ -1,5 +1,5 @@
 import { ConditionGrade, PrismaClient, ProductType } from '@prisma/client';
-import { PRODUCT_PHOTOS } from './seed-photos';
+import { PRODUCT_PHOTOS, SAMPLE_PHOTOS } from './seed-photos';
 
 const prisma = new PrismaClient();
 
@@ -13,17 +13,15 @@ interface SeedProduct {
   sold?: boolean;
   condition?: { grade: ConditionGrade; note: string };
   featuredRank?: number;
-  /** How many Sample Photos were shot with this product. */
-  samplePhotos?: number;
 }
 
 // Film Rolls are deliberately left without featured products, so their row shows the newest-first fallback.
 // One Out of Stock Digital Camera and one Out of Stock Film Roll land on the homepage, so "Out of stock" is visible.
-// Only 5 Film Rolls have Sample Photos (16 in all), so the homepage tops up past one photo per Film Roll.
+// Only 5 Film Rolls have Sample Photos (see SAMPLE_PHOTOS), and some have several, so the homepage tops up past one photo per Film Roll.
 // A few cameras have Sample Photos too; the homepage must leave those out.
 const products: SeedProduct[] = [
   // Digital Cameras
-  { slug: 'fujifilm-x100vi', productType: 'DIGITAL_CAMERA', name: 'Fujifilm X100VI', priceVnd: 45_990_000, stock: 4, featuredRank: 1, samplePhotos: 2,
+  { slug: 'fujifilm-x100vi', productType: 'DIGITAL_CAMERA', name: 'Fujifilm X100VI', priceVnd: 45_990_000, stock: 4, featuredRank: 1,
     description: 'Fixed-lens compact with a 23mm f/2 lens, a 40MP sensor and Fujifilm film simulations.' },
   { slug: 'sony-a7-iv-body', productType: 'DIGITAL_CAMERA', name: 'Sony A7 IV (Body)', priceVnd: 52_990_000, stock: 6, featuredRank: 2,
     description: '33MP full-frame, 4K 60p video and real-time eye autofocus. Body only.' },
@@ -42,7 +40,7 @@ const products: SeedProduct[] = [
   { slug: 'leica-m6-1986-sold', productType: 'FILM_CAMERA', name: 'Leica M6 (1986)', priceVnd: 89_000_000, sold: true, featuredRank: 1,
     condition: { grade: 'A_PLUS', note: 'Near mint, accurate metering, no notable scratches.' },
     description: 'The legendary rangefinder with a 0.72x viewfinder, serviced in Japan.' },
-  { slug: 'canon-ae-1-program', productType: 'FILM_CAMERA', name: 'Canon AE-1 Program', priceVnd: 7_500_000, featuredRank: 2, samplePhotos: 2,
+  { slug: 'canon-ae-1-program', productType: 'FILM_CAMERA', name: 'Canon AE-1 Program', priceVnd: 7_500_000, featuredRank: 2,
     condition: { grade: 'A', note: 'Works well, with a few light scratches on the base plate.' },
     description: 'The most popular SLR of the 1980s, with an FD 50mm f/1.8 lens.' },
   { slug: 'nikon-fm2-chrome', productType: 'FILM_CAMERA', name: 'Nikon FM2 Chrome', priceVnd: 9_800_000, featuredRank: 3,
@@ -62,31 +60,32 @@ const products: SeedProduct[] = [
     description: 'An SLR with Program mode, with an MD Rokkor 50mm f/1.7 lens.' },
 
   // Film Rolls
-  { slug: 'kodak-portra-400-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Portra 400 – 35mm – 36 exp', priceVnd: 420_000, stock: 40, samplePhotos: 5,
+  { slug: 'kodak-portra-400-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Portra 400 – 35mm – 36 exp', priceVnd: 420_000, stock: 40,
     description: 'Colour negative film with warm skin tones and wide latitude, made for portraits.' },
   { slug: 'kodak-portra-400-120', productType: 'FILM_ROLL', name: 'Kodak Portra 400 – 120', priceVnd: 380_000, stock: 12,
     description: 'The medium format version of Portra 400 for 6x6 and 6x7 cameras.' },
-  { slug: 'ilford-hp5-plus-35mm-36', productType: 'FILM_ROLL', name: 'Ilford HP5 Plus 400 – 35mm – 36 exp', priceVnd: 230_000, stock: 25, samplePhotos: 4,
+  { slug: 'ilford-hp5-plus-35mm-36', productType: 'FILM_ROLL', name: 'Ilford HP5 Plus 400 – 35mm – 36 exp', priceVnd: 230_000, stock: 25,
     description: 'ISO 400 black-and-white film with fine grain that pushes well.' },
-  { slug: 'kodak-gold-200-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Gold 200 – 35mm – 36 exp', priceVnd: 190_000, stock: 60, samplePhotos: 3,
+  { slug: 'kodak-gold-200-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Gold 200 – 35mm – 36 exp', priceVnd: 190_000, stock: 60,
     description: 'Warm colour film with sunny yellows, the go-to choice for a bright day.' },
-  { slug: 'cinestill-800t-35mm-36', productType: 'FILM_ROLL', name: 'CineStill 800T – 35mm – 36 exp', priceVnd: 480_000, stock: 8, samplePhotos: 3,
+  { slug: 'cinestill-800t-35mm-36', productType: 'FILM_ROLL', name: 'CineStill 800T – 35mm – 36 exp', priceVnd: 480_000, stock: 8,
     description: 'Tungsten-balanced cinema film, with its signature red halation at night.' },
-  { slug: 'kodak-ektar-100-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Ektar 100 – 35mm – 36 exp', priceVnd: 350_000, stock: 15, samplePhotos: 1,
+  { slug: 'kodak-ektar-100-35mm-36', productType: 'FILM_ROLL', name: 'Kodak Ektar 100 – 35mm – 36 exp', priceVnd: 350_000, stock: 15,
     description: 'The finest-grained colour negative film, with saturated colour for landscapes.' },
   // Newest Film Roll, so an Out of Stock card shows in the fallback row.
   { slug: 'fujifilm-c200-35mm-36', productType: 'FILM_ROLL', name: 'Fujifilm C200 – 35mm – 36 exp', priceVnd: 165_000, stock: 0,
     description: 'Affordable colour film with the signature Fuji cool greens.' },
 ];
 
-// Portrait, landscape and square shots, like real film scans.
-const SAMPLE_PHOTO_SIZES = ['800/1000', '1000/700', '900/900'];
-
 async function main() {
   // Fail before touching the database if any product has no Product Photo.
   const missing = products.filter((p) => !PRODUCT_PHOTOS[p.slug]?.length).map((p) => p.slug);
   if (missing.length > 0) {
     throw new Error(`No Product Photo in prisma/seed-photos.ts for: ${missing.join(', ')}`);
+  }
+  const unknown = Object.keys(SAMPLE_PHOTOS).filter((slug) => !products.some((p) => p.slug === slug));
+  if (unknown.length > 0) {
+    throw new Error(`Sample Photos in prisma/seed-photos.ts for unknown products: ${unknown.join(', ')}`);
   }
 
   await prisma.product.deleteMany();
@@ -117,8 +116,8 @@ async function main() {
           })),
         },
         samplePhotos: {
-          create: Array.from({ length: p.samplePhotos ?? 0 }, (_, n) => ({
-            url: `https://picsum.photos/seed/${p.slug}-sample-${n + 1}/${SAMPLE_PHOTO_SIZES[n % SAMPLE_PHOTO_SIZES.length]}`,
+          create: (SAMPLE_PHOTOS[p.slug] ?? []).map((photo, n) => ({
+            url: photo.url,
             alt: `Shot on ${p.name} (${n + 1})`,
             // Hours apart, so photos of different products interleave by date.
             createdAt: new Date(Date.UTC(2026, 9, 1) + (n * 7 + index) * 3_600_000),

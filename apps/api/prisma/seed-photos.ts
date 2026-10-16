@@ -1,7 +1,9 @@
 // Product Photos for the seed: freely licensed images from Wikimedia Commons (each entry links its file page,
 // which carries the author and full licence). Dev/demo data only; the admin will upload the shop's own photos.
 
-export const PRODUCT_PHOTOS: Record<string, { url: string; licence: string; source: string }[]> = {
+type SeedPhoto = { url: string; licence: string; source: string };
+
+export const PRODUCT_PHOTOS: Record<string, SeedPhoto[]> = {
   'fujifilm-x100vi': [
     { url: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Fujifilm_X100VI_25_may_2024b.jpg/960px-Fujifilm_X100VI_25_may_2024b.jpg', licence: 'CC0', source: 'https://commons.wikimedia.org/wiki/File:Fujifilm_X100VI_25_may_2024b.jpg' },
     { url: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Fujifilm_X100VI_25_may_2024a.jpg/960px-Fujifilm_X100VI_25_may_2024a.jpg', licence: 'CC0', source: 'https://commons.wikimedia.org/wiki/File:Fujifilm_X100VI_25_may_2024a.jpg' },
@@ -84,4 +86,42 @@ export const PRODUCT_PHOTOS: Record<string, { url: string; licence: string; sour
     { url: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Fujicolor_C200_Film_Roll_And_Box.jpg/960px-Fujicolor_C200_Film_Roll_And_Box.jpg', licence: 'CC BY-SA 4.0', source: 'https://commons.wikimedia.org/wiki/File:Fujicolor_C200_Film_Roll_And_Box.jpg' },
     { url: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Fujifilm_Fujicolor_C200_box.jpg/960px-Fujifilm_Fujicolor_C200_box.jpg', licence: 'CC BY-SA 4.0', source: 'https://commons.wikimedia.org/wiki/File:Fujifilm_Fujicolor_C200_box.jpg' },
   ],
+};
+
+// Sample Photos for the seed: free photos from the Unsplash "film photography" search
+// (https://unsplash.com/s/photos/film-photography), under the Unsplash License. Each entry links its photo page,
+// which credits the photographer. Dev/demo data only: they stand in for shots taken with each product.
+// `sat=-100` (imgix) renders a colour photo in black and white, for black-and-white Film Rolls.
+const unsplash = (id: string, page: string, { blackAndWhite = false } = {}): SeedPhoto => ({
+  url: `https://images.unsplash.com/photo-${id}?w=1000&q=70&auto=format&fit=crop${blackAndWhite ? '&sat=-100' : ''}`,
+  licence: 'Unsplash License',
+  source: `https://unsplash.com/photos/${page}`,
+});
+
+const BEACH = unsplash('1643138874737-33babf17f0a8', 'a-couple-of-women-sitting-next-to-each-other-on-a-beach-195p-UrLHh4');
+const STRIPED_SHIRT = unsplash('1598962134959-27a16982a4db', 'woman-in-red-and-black-stripe-shirt-sitting-on-chair-JGLLU1YNxU4');
+const COSMOS = unsplash('1569346276519-709519eeaa51', 'cosmos-flowers-against-blue-sky-jtI_dsxoj1s');
+const BLURRY_TREE = unsplash('1640100921962-1086f92e7a59', 'a-blurry-photo-of-a-tree-with-a-sky-in-the-background-pvnqiHyujo8', { blackAndWhite: true });
+const BOOKS = unsplash('1561871733-40a3338b8cb4', 'assorted-title-book-lot-in-cabinet-nTifHA326v4', { blackAndWhite: true });
+const FLOWER_FIELD = unsplash('1628945301291-a19611e106a7', 'pink-flower-field-near-body-of-water-during-daytime-StQJj4NAYg0');
+const WHITE_BOAT = unsplash('1603118258032-aea76c546616', 'white-boat-on-body-of-water-during-daytime-rR8xBouCUn0');
+const SUNSET = unsplash('1568190002605-b51fa38eac46', 'a-picture-of-a-sunset-with-clouds-in-the-sky-U2Ug1A6tQew');
+const KOI = unsplash('1598461336473-b0cc035d4e35', 'school-of-koi-fish-in-water-rG1RygpXkiY');
+const LAKESIDE_TREES = unsplash('1597157153515-028fa3d4bd69', 'green-trees-near-body-of-water-during-daytime-ss8Dka_Tvwg');
+const WAVES = unsplash('1596999233004-6ffb15fc364c', 'ocean-waves-crashing-on-shore-during-daytime-53-v5b5qfqc');
+// Camera-themed shots from the same search; cameras' Sample Photos stay off the homepage.
+const HOLDING_CAMERA = unsplash('1590486803833-1c5dc8ddd4c8', 'person-holding-black-dslr-camera-2b6K4uy0Hbc');
+const FILM_CREW = unsplash('1612544409025-e1f6a56c1152', 'film-crew-on-soundstage-workspace-br2HgQuvq6I');
+const FILM_REEL = unsplash('1518676590629-3dcbd9c5a5c9', 'photography-of-camera-reel-film-9lTUAlNB87M');
+const CAMERA_ON_MAP = unsplash('1452587925148-ce544e77e70d', 'black-and-grey-dslr-camera-near-several-photos-on-brown-map-mj2NwYH3wBA');
+
+// Each photo is used once, so the homepage polaroids never repeat.
+export const SAMPLE_PHOTOS: Record<string, SeedPhoto[]> = {
+  'fujifilm-x100vi': [HOLDING_CAMERA, FILM_CREW],
+  'canon-ae-1-program': [FILM_REEL, CAMERA_ON_MAP],
+  'kodak-portra-400-35mm-36': [BEACH, STRIPED_SHIRT, COSMOS],
+  'ilford-hp5-plus-35mm-36': [BLURRY_TREE, BOOKS],
+  'kodak-gold-200-35mm-36': [FLOWER_FIELD, WHITE_BOAT],
+  'cinestill-800t-35mm-36': [SUNSET, KOI],
+  'kodak-ektar-100-35mm-36': [LAKESIDE_TREES, WAVES],
 };

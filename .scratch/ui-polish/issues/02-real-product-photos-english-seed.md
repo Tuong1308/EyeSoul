@@ -21,3 +21,5 @@
 - Names, descriptions and condition notes are English; alt text is `<name>, main photo` / `<name>, another angle`; Sample Photos are `Shot on <name> (n)` on picsum placeholders.
 - API e2e tests: 19/19 pass (against `eyesoul_test`).
 - `db:setup` run on a fresh, empty throwaway database: exit 0, 21 products, 40 Product Photos, none from picsum. The throwaway database was dropped afterwards; the dev database was not touched.
+
+**2026-10-16, follow-up (owner request):** Sample Photos no longer use picsum. They are the free photos from https://unsplash.com/s/photos/film-photography (Unsplash+ items excluded), recorded in `SAMPLE_PHOTOS` in `apps/api/prisma/seed-photos.ts` with licence and source. Each is used once. 11 film-look shots go to the Film Rolls, so the homepage shows 11 distinct polaroids. HP5 shots are rendered in black and white via `sat=-100`. Cameras get the 4 camera-themed shots from the same search. The "Sample Photos stay placeholder images" criterion above is superseded.
