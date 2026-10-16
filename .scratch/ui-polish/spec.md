@@ -173,7 +173,7 @@ Replaces the dark Ken Burns hero entirely. The region keeps an accessible name (
 - Film strip: about 12 hard-coded photos bundled with the web app, purely decorative (hidden from assistive tech, not clickable). The strip is a dark full-bleed band with sprocket-hole edges and amber frame numbers. It scrolls endlessly to the left (~45s per loop) and pauses on hover.
 - Commitments ticker: an amber band under the strip, scrolling endlessly the other way (~30s per loop). The three commitments use no numbers until real policies exist.
 - The hero needs no API data, so it renders and animates immediately.
-- Until the owner supplies real photos, the hard-coded photos are placeholders with the same shape.
+- Until the owner supplies real photos, the hard-coded photos are stand-ins with the same shape: free photos from the Unsplash "film photography" search, cropped and bundled in `public/hero/` (owner request, 2026-10-16; previously drawn SVG placeholders).
 - Entrance sequence (from the prototype): logo at 0s; headline words from 0.3s, ~0.08s apart; pill opens horizontally at ~0.7s; short line ~1.0s; buttons ~1.1s; strip rises in at ~1.25s. The logo turns once starting ~1.7s.
 
 **Spotlights**
