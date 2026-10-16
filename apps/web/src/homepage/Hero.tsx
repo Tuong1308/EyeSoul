@@ -31,7 +31,7 @@ export function Hero() {
   const enter = useEntrance();
   const reduceMotion = useReducedMotion();
   return (
-    <section aria-label="About Eye Soul" data-hero className="overflow-hidden bg-paper pt-12 md:pt-20">
+    <section aria-label="About Eye Soul" data-hero className="light-leak leak-hero bg-paper pt-12 md:pt-20">
       <div className="frame text-center">
         <motion.div {...enter(0)}>
           <motion.div

@@ -65,6 +65,47 @@
   }
 }
 
+/*
+ * Film light leaks: soft blooms of warm colour behind a band, like light fogging the edge of a negative.
+ * `light-leak` sets up the layer; a `leak-*` utility picks the band's blooms (drawn over its flat colour).
+ */
+@utility light-leak {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--leak);
+  }
+}
+@utility leak-hero {
+  --leak:
+    radial-gradient(40% 55% at 8% 12%, rgb(232 163 61 / 0.55), transparent 70%),
+    radial-gradient(35% 50% at 95% 20%, rgb(240 120 90 / 0.4), transparent 70%),
+    radial-gradient(45% 40% at 70% 85%, rgb(250 200 150 / 0.55), transparent 75%),
+    linear-gradient(180deg, #f8efe2, var(--color-paper));
+}
+@utility leak-shop {
+  --leak:
+    radial-gradient(45% 60% at 100% 50%, rgb(232 163 61 / 0.35), transparent 70%),
+    radial-gradient(30% 40% at 0% 100%, rgb(240 120 90 / 0.18), transparent 70%);
+}
+@utility leak-portfolio {
+  --leak:
+    radial-gradient(45% 60% at 0% 40%, rgb(240 140 110 / 0.35), transparent 70%),
+    radial-gradient(35% 45% at 100% 100%, rgb(232 163 61 / 0.3), transparent 70%);
+}
+@utility leak-assistant {
+  --leak:
+    radial-gradient(40% 60% at 100% 30%, rgb(232 120 61 / 0.45), transparent 70%),
+    radial-gradient(35% 50% at 10% 100%, rgb(180 60 50 / 0.35), transparent 70%);
+}
+
 /* "See sample photos" glides down to the Sample Photo section. */
 @media (prefers-reduced-motion: no-preference) {
   html {

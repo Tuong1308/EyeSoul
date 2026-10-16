@@ -29,7 +29,7 @@ interface Spotlight {
   title: ReactNode;
   body: string;
   cta: { label: string; to: string };
-  /** Background and text colours of the band. */
+  /** Background and text colours of the band, and its light leaks. */
   tone: string;
   /** Whether the band is dark, so its copy and button turn light. */
   onDark: boolean;
@@ -49,7 +49,7 @@ const SPOTLIGHTS: Spotlight[] = [
     ),
     body: 'New digital bodies, used film cameras graded A+ to C with every flaw written down, and fresh film rolls in 35mm and 120.',
     cta: { label: 'Browse products', to: PRODUCTS_PATH },
-    tone: 'bg-paper text-ink',
+    tone: 'bg-paper text-ink leak-shop',
     onDark: false,
     extra: <RotatingQuote />,
     visual: <ShopVisual />,
@@ -64,7 +64,7 @@ const SPOTLIGHTS: Spotlight[] = [
     ),
     body: 'Upload your scans, tag the camera and film you used, and turn your frames into a portfolio others can follow.',
     cta: { label: 'Start your portfolio', to: PORTFOLIO_PATH },
-    tone: 'bg-beige text-ink',
+    tone: 'bg-beige text-ink leak-portfolio',
     onDark: false,
     visual: <PortfolioVisual />,
   },
@@ -78,7 +78,7 @@ const SPOTLIGHTS: Spotlight[] = [
     ),
     body: 'Our AI assistant helps you pick the camera and film for how you shoot, and walks you through metering, exposure and the rest.',
     cta: { label: 'Ask the assistant', to: ASSISTANT_PATH },
-    tone: 'bg-espresso text-paper',
+    tone: 'bg-espresso text-paper leak-assistant',
     onDark: true,
     visual: <AssistantVisual />,
   },
@@ -90,7 +90,7 @@ const SPOTLIGHTS: Spotlight[] = [
  */
 export function Spotlights() {
   return SPOTLIGHTS.map((spotlight, index) => (
-    <section key={spotlight.name} aria-label={spotlight.name} className={`${spotlight.tone} py-20 md:py-28`}>
+    <section key={spotlight.name} aria-label={spotlight.name} className={`light-leak ${spotlight.tone} py-20 md:py-28`}>
       <Reveal className="frame grid items-center gap-12 md:grid-cols-2 md:gap-20" stagger={0.3} delayChildren={0.15}>
         <div className={index % 2 ? 'md:order-2' : ''}>
           <SpotlightCopy spotlight={spotlight} />
