@@ -18,7 +18,7 @@ Every animation is then audited for reduced motion: the entrance and reveals bec
 - [x] The Cart icon bounces and the count pulses after each add (the count value itself is covered by tests)
 - [x] `/products` rows reveal once, staggered
 - [x] With reduced motion enabled, nothing on the site moves beyond quick fades
-- [ ] All tests pass; the owner signs off the look and motion against the prototype
+- [x] All tests pass; the owner signs off the look and motion against the prototype
 
 ## Comments
 
@@ -28,3 +28,5 @@ Every animation is then audited for reduced motion: the entrance and reveals bec
 - Cart feedback: `cart/use-cart-add-feedback.ts` bounces the icon and pulses the count whenever the count goes up: an add, the mini-cart "+", or another tab adding. Not on load, and never under reduced motion. A throwaway jsdom spy confirmed one add calls `animate` for both. Headless Edge doesn't advance Motion's JS frame loop, so the bounce itself wasn't observed there.
 - `/products` rows reveal once through `Reveal`. Headless Edge `getAnimations()`: title at 0ms, cards at 80/160/240/320ms, 600ms each.
 - Reduced motion: `Reveal` fades its block in over 0.2s with the children in place (rows end fully opaque, no transforms; checked in headless Edge). A base rule limits CSS transitions to colour, opacity, visibility and filters. Hover, press and pulse transforms are motion-safe. Hero, Spotlights and polaroids were already gated (07–09). `index.css` notes which mechanism owns what.
+
+**2026-10-16, owner sign-off:** The owner signed off the look and motion, and `feat/ui-polish` was fast-forwarded into `master` and pushed (4e71cc6). All criteria are met; the ticket is done.

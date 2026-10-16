@@ -2,7 +2,7 @@
 
 **What to build:** The hero and the three Spotlight bands keep their flat colours (paper, paper, beige, espresso) but gain soft blooms of warm colour, like light leaking onto film, so the bands feel less plain. Text contrast and the band colour sequence are unchanged.
 
-**Status:** ready-for-human
+**Status:** ready-for-agent
 
 ## Acceptance criteria
 
@@ -14,3 +14,5 @@
 ## Comments
 
 **2026-10-16, prototype verdict (owner):** Prompted by "the backgrounds behind the features and the banner are a bit plain; can we use photos or other colours?" Five options were prototyped on the homepage, switchable via `?variant=`: A flat (today), B film light leaks, C blurred photo + colour wash, D light-leak hero + faint photos in the Spotlights, E a bolder flat palette. The owner chose **B**. The prototype, with all five variants, is on branch `prototype/backgrounds` (commit 4641913); it is a primary source, not code to merge. B is folded in as the `light-leak` and `leak-*` utilities in `apps/web/src/index.css`.
+
+**2026-10-16, owner sign-off:** The owner approved the light leaks as built (4e71cc6, now on `master`). All criteria are met; the ticket is done. The status matches the other finished tickets (ready-for-agent, all boxes ticked), since the tracker has no "done" label.
